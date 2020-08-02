@@ -16,18 +16,25 @@ DEFINES += QT_DEPRECATED_WARNINGS
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
 SOURCES += \
+    CopyItem.cpp \
     Destination.cpp \
+    ThreadAnalyze.cpp \
+    WindowAnalyze.cpp \
     main.cpp \
     MainWindow.cpp
 
 HEADERS += \
+    CopyItem.hpp \
     Destination.hpp \
     Global.hpp \
-    MainWindow.hpp
+    MainWindow.hpp \
+    ThreadAnalyze.hpp \
+    WindowAnalyze.hpp
 
 FORMS += \
     Destination.ui \
-    MainWindow.ui
+    MainWindow.ui \
+    WindowAnalyze.ui
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin

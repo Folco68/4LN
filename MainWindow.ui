@@ -6,15 +6,12 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>450</width>
-    <height>173</height>
+    <width>409</width>
+    <height>194</height>
    </rect>
   </property>
-  <property name="minimumSize">
-   <size>
-    <width>450</width>
-    <height>0</height>
-   </size>
+  <property name="windowTitle">
+   <string>MultiDesCop - Analyzing...</string>
   </property>
   <widget class="QWidget" name="centralwidget">
    <layout class="QVBoxLayout" name="verticalLayout">
@@ -23,25 +20,36 @@
       <property name="title">
        <string>Source</string>
       </property>
-      <layout class="QHBoxLayout" name="horizontalLayout">
+      <layout class="QVBoxLayout" name="verticalLayout_2">
        <item>
-        <widget class="QLabel" name="LabelDirectory">
-         <property name="text">
-          <string>Select a directory:</string>
-         </property>
-        </widget>
+        <layout class="QHBoxLayout" name="HLayoutSource">
+         <item>
+          <widget class="QLabel" name="LabelDirectory">
+           <property name="text">
+            <string>Select a directory:</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QLineEdit" name="EditDirectory">
+           <property name="readOnly">
+            <bool>true</bool>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QPushButton" name="ButtonBrowse">
+           <property name="text">
+            <string>Browse...</string>
+           </property>
+          </widget>
+         </item>
+        </layout>
        </item>
        <item>
-        <widget class="QLineEdit" name="EditDirectory">
-         <property name="readOnly">
-          <bool>true</bool>
-         </property>
-        </widget>
-       </item>
-       <item>
-        <widget class="QPushButton" name="ButtonBrowse">
+        <widget class="QLabel" name="LabelNote">
          <property name="text">
-          <string>Browse...</string>
+          <string>Note: only the &lt;i&gt;content&lt;/i&gt; of the directory will be cloned, not the directory itself!</string>
          </property>
         </widget>
        </item>
@@ -49,13 +57,13 @@
      </widget>
     </item>
     <item>
-     <widget class="QGroupBox" name="BoxDestinations">
+     <widget class="QGroupBox" name="BoxDestination">
       <property name="title">
        <string>Destinations</string>
       </property>
       <layout class="QVBoxLayout" name="verticalLayout_3">
        <item>
-        <widget class="QLabel" name="LabelNoSrcDest">
+        <widget class="QLabel" name="LabelNoDestination">
          <property name="font">
           <font>
            <weight>75</weight>
@@ -63,7 +71,7 @@
           </font>
          </property>
          <property name="text">
-          <string>No source or destination available.</string>
+          <string>No destination available.</string>
          </property>
         </widget>
        </item>
@@ -76,20 +84,6 @@
     <item>
      <layout class="QHBoxLayout" name="HLayoutButtons">
       <item>
-       <widget class="QPushButton" name="ButtonDevicesStatus">
-        <property name="text">
-         <string>Devices status</string>
-        </property>
-       </widget>
-      </item>
-      <item>
-       <widget class="QPushButton" name="ButtonRefresh">
-        <property name="text">
-         <string>Refresh</string>
-        </property>
-       </widget>
-      </item>
-      <item>
        <spacer name="HSpacerButtons">
         <property name="orientation">
          <enum>Qt::Horizontal</enum>
@@ -101,6 +95,13 @@
          </size>
         </property>
        </spacer>
+      </item>
+      <item>
+       <widget class="QPushButton" name="ButtonRefresh">
+        <property name="text">
+         <string>Refresh</string>
+        </property>
+       </widget>
       </item>
       <item>
        <widget class="QPushButton" name="ButtonClone">

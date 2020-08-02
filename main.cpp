@@ -1,5 +1,5 @@
 #include "MainWindow.hpp"
-
+#include "ThreadAnalyze.hpp"
 #include <QApplication>
 
 int main(int argc, char *argv[])
@@ -7,5 +7,8 @@ int main(int argc, char *argv[])
     QApplication a(argc, argv);
     MainWindow w;
     w.show();
-    return a.exec();
+    int ret = a.exec();
+
+    ThreadAnalyze::release();
+    return ret;
 }

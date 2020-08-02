@@ -1,7 +1,8 @@
-- list of devices status
-/ don't refresh ui if DeviceList::refresh() return false (no drive modification)
-- prevent from cloning if there is no destination available
-- destinations: use checkable buttons without border?
-+ allow directory as a source
-- global window title
-- display cloning process in a different window
+- ensure source dir still exists when refreshing
+
+
+
+// Path/directory
+- toNAtiveSeparator()   -> make / become \ on Windows
+- cleanPath()           -> remove last \ or / (static)
+- canonicalPath()       -> remove ., .. and symlinks
