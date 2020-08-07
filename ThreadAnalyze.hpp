@@ -2,7 +2,7 @@
 #define THREADANALYZE_HPP
 
 #include "CopyItem.hpp"
-#include "Destination.hpp"
+#include "ItemContainer.hpp"
 #include <QList>
 #include <QMutex>
 #include <QObject>
@@ -16,23 +16,19 @@ public:
     static ThreadAnalyze* instance();
     static void release();
 
-    void analyze(QString source, QList<Destination*> destinations);
+    void analyze(QString source, QList<QString> destinations);
 
 private:
     static ThreadAnalyze* threadanalyze;
 
-    QString SourcePath;
-    QList<Destination*> DestinationList;
-
-    QList<CopyItem> SourceItems;
-    QList<QList<CopyItem>> DestinationItems;
+    ItemContainer SourceItems;
+    QList<ItemContainer> DestinationsItems;
 
     void run() override;
-    void parseDirectory(QString directory, QList<CopyItem>* list);
+    void parseDirectory(ItemContainer* container, QString path = QString(""));
 
 signals:
     void analyzeComplete();
-    void analyzeCanceled();
     void parsingFile(QString filename);
     void parsingNextDirectory();
 };

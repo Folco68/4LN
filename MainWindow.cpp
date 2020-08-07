@@ -3,6 +3,7 @@
 #include "Global.hpp"
 #include "ThreadAnalyze.hpp"
 #include "WindowAnalyze.hpp"
+#include "WindowDiff.hpp"
 #include "ui_MainWindow.h"
 #include <QBoxLayout>
 #include <QCheckBox>
@@ -10,6 +11,7 @@
 #include <QFileDialog>
 #include <QHBoxLayout>
 #include <QLabel>
+#include <QMessageBox>
 #include <QSpacerItem>
 #include <QStorageInfo>
 #include <QString>
@@ -83,31 +85,30 @@ void MainWindow::refreshDestinations()
 
 void MainWindow::clone()
 {
-    // Create and show the progress window (modal window), passing the count of analyze steps
-    this->Window = new WindowAnalyze(1 + selectedDestinations().count());
+    // Create and show the progress window
+    this->Window = new WindowAnalyze(selectedDrivesCount());
     this->Window->show();
 
     // End of thread handling
     connect(ThreadAnalyze::instance(), &ThreadAnalyze::analyzeComplete, this, &MainWindow::analyzeComplete, Qt::QueuedConnection);
-    connect(ThreadAnalyze::instance(), &ThreadAnalyze::analyzeCanceled, this, &MainWindow::analyzeCanceled, Qt::QueuedConnection);
     connect(ThreadAnalyze::instance(), &ThreadAnalyze::finished, this, &MainWindow::deleteWindowAnalyze, Qt::QueuedConnection);
 
     // Finally, start the analyzer thread
-    ThreadAnalyze::instance()->analyze(ui->EditDirectory->text(), selectedDestinations());
+    ThreadAnalyze::instance()->analyze(ui->EditDirectory->text(), selectedDrives());
 }
 
 void MainWindow::browseSource()
 {
     // Default directory
     QString directory = ui->EditDirectory->text();
-    if (directory.isEmpty()) {
+    if (!QDir(directory).exists()) {
         directory = QDir::homePath();
     }
 
     // Open directory selection
     QString Source = QFileDialog::getExistingDirectory(this, tr("Select source directory"), directory);
     if (!Source.isEmpty()) {
-        ui->EditDirectory->setText(Source + QDir::separator());
+        ui->EditDirectory->setText(QDir::cleanPath(QDir(Source).canonicalPath()));
         updateUI();
     }
 }
@@ -123,7 +124,7 @@ void MainWindow::updateUI()
     // Shortcuts
     bool SrcDefined    = !ui->EditDirectory->text().isEmpty();
     bool DestAvailable = !this->DestinationList.isEmpty();
-    bool DestSelected  = !selectedDestinations().isEmpty();
+    bool DestSelected  = selectedDrivesCount() != 0;
 
     // Adjust UI
     ui->LabelNoDestination->setVisible(!DestAvailable);
@@ -134,24 +135,35 @@ void MainWindow::updateUI()
     adjustSize();
 }
 
-QList<Destination*> MainWindow::selectedDestinations() const
+QList<QString> MainWindow::selectedDrives() const
 {
-    QList<Destination*> List;
+    QList<QString> Drives;
     for (int i = 0; i < this->DestinationList.count(); i++) {
-        Destination* dest = this->DestinationList.at(i);
-        if (dest->isSelected()) {
-            List << dest;
+        if (DestinationList.at(i)->isSelected()) {
+            Drives << DestinationList.at(i)->drivePath();
         }
     }
-    return List;
+
+    return Drives;
+}
+
+int MainWindow::selectedDrivesCount() const
+{
+    int count = 0;
+    for (int i = 0; i < this->DestinationList.count(); i++) {
+        if (DestinationList.at(i)->isSelected()) {
+            count++;
+        }
+    }
+
+    return count;
 }
 
 void MainWindow::analyzeComplete()
 {
-}
-
-void MainWindow::analyzeCanceled()
-{
+    WindowDiff* window = new WindowDiff;
+    window->exec();
+    delete window;
 }
 
 void MainWindow::deleteWindowAnalyze()

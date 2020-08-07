@@ -1,8 +1,9 @@
 - ensure source dir still exists when refreshing
-
-
+- race condition: cloning can be performed between analyze and Window diff pop up
 
 // Path/directory
-- toNAtiveSeparator()   -> make / become \ on Windows
-- cleanPath()           -> remove last \ or / (static)
-- canonicalPath()       -> remove ., .. and symlinks
+static  toNAtiveSeparator()   -> make / become \ on Windows
+static  cleanPath()           -> remove last \ or /, . and .. Keep symlinks. Use '/' for any platform
+        canonicalPath()       -> remove ., .. and symlinks
+
+=> Prefer QDir::cleanPath(Qdir(xyz).canonicalPath());

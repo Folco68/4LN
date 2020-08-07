@@ -29,7 +29,8 @@ private:
     WindowAnalyze* Window;
 
     void updateUI();
-    QList<Destination*> selectedDestinations() const;
+    QList<QString> selectedDrives() const;
+    int selectedDrivesCount() const;
     void deleteWindowAnalyze();
 
     // Buttons
@@ -39,7 +40,6 @@ private:
 
     // Slots
     void analyzeComplete();
-    void analyzeCanceled();
 };
 
 #define HZ_DEST_MAX 5

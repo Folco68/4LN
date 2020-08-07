@@ -17,8 +17,9 @@ class Destination : public QWidget
 public:
     explicit Destination(QStorageInfo storage);
     ~Destination();
-    QCheckBox* checkBox() const;
+
     bool isSelected() const;
+    QCheckBox* checkBox() const;
     QString drivePath() const;
 
 private:

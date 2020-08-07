@@ -1,12 +1,13 @@
 #include "Destination.hpp"
 #include "ui_Destination.h"
+#include <QDir>
 
 Destination::Destination(QStorageInfo storage) : ui(new Ui::Destination)
 {
     ui->setupUi(this);
 
     // Root path return the drive letter
-    this->RootPath = storage.rootPath();
+    this->RootPath = QDir::cleanPath(QDir(storage.rootPath()).canonicalPath());
 
     // Add the volume label if one is set
     if (storage.name().isEmpty()) {

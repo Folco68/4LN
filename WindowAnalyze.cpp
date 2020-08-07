@@ -7,7 +7,7 @@
 WindowAnalyze::WindowAnalyze(int progresscount) : QWidget(nullptr), ui(new Ui::WindowAnalyze)
 {
     ui->setupUi(this);
-    ui->ProgressBar->setMaximum(progresscount);
+    ui->ProgressBar->setMaximum(1 + progresscount * 2); // +1: source directory. *2: 1 for parsing + 1 for action to take
     setWindowTitle(WINDOW_TITLE);
     setWindowModality(Qt::ApplicationModal);
     setWindowFlags(Qt::CustomizeWindowHint | Qt::WindowTitleHint);
