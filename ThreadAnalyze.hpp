@@ -1,10 +1,7 @@
 #ifndef THREADANALYZE_HPP
 #define THREADANALYZE_HPP
 
-#include "CopyItem.hpp"
-#include "ItemContainer.hpp"
-#include <QList>
-#include <QMutex>
+#include "DriveData.hpp"
 #include <QObject>
 #include <QThread>
 
@@ -12,22 +9,19 @@ class ThreadAnalyze : public QThread
 {
     Q_OBJECT
 
-public:
+  public:
     static ThreadAnalyze* instance();
     static void release();
 
     void analyze(QString source, QList<QString> destinations);
 
-private:
+  private:
     static ThreadAnalyze* threadanalyze;
 
-    ItemContainer SourceItems;
-    QList<ItemContainer> DestinationsItems;
-
     void run() override;
-    void parseDirectory(ItemContainer* container, QString path = QString(""));
+    void parseDirectory(DriveData* drive, QString path = QString(""));
 
-signals:
+  signals:
     void analyzeComplete();
     void parsingFile(QString filename);
     void parsingNextDirectory();

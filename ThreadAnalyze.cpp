@@ -1,4 +1,5 @@
 #include "ThreadAnalyze.hpp"
+#include "CopyData.hpp"
 #include "Global.hpp"
 #include <QDir>
 
@@ -20,16 +21,7 @@ void ThreadAnalyze::release()
 
 void ThreadAnalyze::analyze(QString source, QList<QString> destinations)
 {
-    // Clean and init source container
-    this->SourceItems.clear();
-    this->SourceItems.init(source);
-
-    // Clean and init destination containers
-    this->DestinationsItems.clear();
-    for (int i = 0; i < destinations.count(); i++) {
-        this->DestinationsItems.append(ItemContainer(destinations.at(i)));
-    }
-
+    CopyData::instance()->init(source, destinations);
     start();
 }
 
@@ -37,12 +29,12 @@ void ThreadAnalyze::run()
 {
     // Parse source
     emit parsingNextDirectory();
-    parseDirectory(&this->SourceItems);
+    parseDirectory(CopyData::instance()->sourceDrive());
 
     // Parse destinations
-    for (int i = 0; i < this->DestinationsItems.count(); i++) {
+    for (int i = 0; i < CopyData::instance()->destinationCount(); i++) {
         emit parsingNextDirectory();
-        parseDirectory(&this->DestinationsItems[i]);
+        parseDirectory(CopyData::instance()->destinationDrive(i));
     }
 
     // Now parse every destination, comparing its content to the source
@@ -50,31 +42,33 @@ void ThreadAnalyze::run()
     // - if a file is present but small, it's flagged for copy
     // - if a file is present and large enough, it will be ignored
 
-    // Parse every destination
-    for (int i = 0; i < this->DestinationsItems.count(); i++) {
+    // Parse every destination, and compare with file data of every source file
+    // i: drive index (destination)
+    // j: file index in drive (destination)
+    // k: file index (source)
+    for (int i = 0; i < CopyData::instance()->destinationCount(); i++) {
         emit parsingNextDirectory();
 
         // Parse every file of a destination
-        for (int j = 0; j < this->DestinationsItems.at(i).count(); j++) {
-            CopyItem* destination = this->DestinationsItems[i].getItem(j);
-
-            emit parsingFile(destination->filename());
+        for (int j = 0; j < CopyData::instance()->destinationDrive(i)->fileCount(); j++) {
+            FileData* destfile = CopyData::instance()->destinationDrive(i)->file(j);
+            emit parsingFile(destfile->filename());
 
             // Compare to every file of the source
-            for (int k = 0; k < this->SourceItems.count(); k++) {
-                CopyItem* source = this->SourceItems.getItem(k);
+            for (int k = 0; k < CopyData::instance()->sourceDrive()->fileCount(); k++) {
+                FileData* srcfile = CopyData::instance()->sourceDrive()->file(k);
 
                 // First quick check, keep deletion flag if names mismatch
-                if (source->filename().compare(destination->filename(), Qt::CaseInsensitive) != 0) {
+                if (srcfile->filename().compare(destfile->filename(), Qt::CaseInsensitive) != 0) {
                     continue;
                 }
 
                 // Else compare size, and don't copy if the files are large enough
-                if ((source->size() == destination->size()) && (source->size() > OVERWRITE_MAXIMUM_SIZE)) {
-                    destination->setProcess(IGNORE_FILE);
+                if ((srcfile->size() == destfile->size()) && (srcfile->size() > OVERWRITE_MAXIMUM_SIZE)) {
+                    destfile->setProcess(IGNORE_FILE);
                 }
                 else {
-                    destination->setProcess(COPY_FILE);
+                    destfile->setProcess(COPY_FILE);
                 }
             }
 
@@ -91,10 +85,10 @@ void ThreadAnalyze::run()
     }
 }
 
-void ThreadAnalyze::parseDirectory(ItemContainer* container, QString path)
+void ThreadAnalyze::parseDirectory(DriveData* drive, QString path)
 {
     // Set directory sorting and filtering
-    QDir dir(container->basePath() + QDir::separator() + path);
+    QDir dir(drive->basePath() + QDir::separator() + path);
     dir.setSorting(QDir::Name | QDir::DirsFirst);
     dir.setFilter(QDir::AllEntries | QDir::NoDotAndDotDot);
 
@@ -110,20 +104,20 @@ void ThreadAnalyze::parseDirectory(ItemContainer* container, QString path)
         if (QFileInfo(filename).isDir()) {
             // Avoid useless separator if path is empty
             if (path.isEmpty()) {
-                parseDirectory(container, strlist.at(i));
+                parseDirectory(drive, strlist.at(i));
             }
             else {
-                parseDirectory(container, path + QDir::separator() + strlist.at(i));
+                parseDirectory(drive, path + QDir::separator() + strlist.at(i));
             }
         }
         else {
             if (path.isEmpty()) {
-                CopyItem item(container->basePath(), strlist.at(i), QFileInfo(filename).size());
-                container->addItem(item);
+                FileData item(drive->basePath(), strlist.at(i), QFileInfo(filename).size());
+                drive->addFile(item);
             }
             else {
-                CopyItem item(container->basePath(), path + QDir::separator() + strlist.at(i), QFileInfo(filename).size());
-                container->addItem(item);
+                FileData item(drive->basePath(), path + QDir::separator() + strlist.at(i), QFileInfo(filename).size());
+                drive->addFile(item);
             }
         }
 

@@ -1,7 +1,7 @@
 #ifndef MAINWINDOW_HPP
 #define MAINWINDOW_HPP
 
-#include "Destination.hpp"
+#include "WidgetDestination.hpp"
 #include "WindowAnalyze.hpp"
 #include <QGridLayout>
 #include <QList>
@@ -25,7 +25,7 @@ public:
 private:
     Ui::MainWindow* ui;
     QGridLayout* DestinationGrid;
-    QList<Destination*> DestinationList;
+    QList<WidgetDestination*> DestinationList;
     WindowAnalyze* Window;
 
     void updateUI();

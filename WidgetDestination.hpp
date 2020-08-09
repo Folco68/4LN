@@ -1,5 +1,5 @@
-#ifndef DESTINATION_HPP
-#define DESTINATION_HPP
+#ifndef WIDGETDESTINATION_HPP
+#define WIDGETDESTINATION_HPP
 
 #include <QCheckBox>
 #include <QStorageInfo>
@@ -10,13 +10,13 @@ namespace Ui {
 class Destination;
 }
 
-class Destination : public QWidget
+class WidgetDestination : public QWidget
 {
     Q_OBJECT
 
 public:
-    explicit Destination(QStorageInfo storage);
-    ~Destination();
+    explicit WidgetDestination(QStorageInfo storage);
+    ~WidgetDestination();
 
     bool isSelected() const;
     QCheckBox* checkBox() const;
@@ -27,4 +27,4 @@ private:
     QString RootPath;
 };
 
-#endif // DESTINATION_HPP
+#endif // WIDGETDESTINATION_HPP

@@ -1,8 +1,8 @@
-#include "Destination.hpp"
-#include "ui_Destination.h"
+#include "WidgetDestination.hpp"
+#include "ui_WidgetDestination.h"
 #include <QDir>
 
-Destination::Destination(QStorageInfo storage) : ui(new Ui::Destination)
+WidgetDestination::WidgetDestination(QStorageInfo storage) : ui(new Ui::Destination)
 {
     ui->setupUi(this);
 
@@ -18,22 +18,22 @@ Destination::Destination(QStorageInfo storage) : ui(new Ui::Destination)
     }
 }
 
-Destination::~Destination()
+WidgetDestination::~WidgetDestination()
 {
     delete ui;
 }
 
-QCheckBox* Destination::checkBox() const
+QCheckBox* WidgetDestination::checkBox() const
 {
     return ui->Checkbox;
 }
 
-bool Destination::isSelected() const
+bool WidgetDestination::isSelected() const
 {
     return ui->Checkbox->isChecked();
 }
 
-QString Destination::drivePath() const
+QString WidgetDestination::drivePath() const
 {
     return this->RootPath;
 }

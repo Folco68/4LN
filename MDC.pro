@@ -17,10 +17,10 @@ DEFINES += QT_DEPRECATED_WARNINGS
 
 SOURCES += \
     CopyData.cpp \
-    CopyItem.cpp \
-    Destination.cpp \
-    ItemContainer.cpp \
+    DriveData.cpp \
+    FileData.cpp \
     ThreadAnalyze.cpp \
+    WidgetDestination.cpp \
     WindowAnalyze.cpp \
     WindowDiff.cpp \
     main.cpp \
@@ -28,18 +28,18 @@ SOURCES += \
 
 HEADERS += \
     CopyData.hpp \
-    CopyItem.hpp \
-    Destination.hpp \
+    DriveData.hpp \
+    FileData.hpp \
     Global.hpp \
-    ItemContainer.hpp \
     MainWindow.hpp \
     ThreadAnalyze.hpp \
+    WidgetDestination.hpp \
     WindowAnalyze.hpp \
     WindowDiff.hpp
 
 FORMS += \
-    Destination.ui \
     MainWindow.ui \
+    WidgetDestination.ui \
     WindowAnalyze.ui \
     WindowDiff.ui
 

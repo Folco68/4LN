@@ -1,7 +1,7 @@
 #include "MainWindow.hpp"
-#include "Destination.hpp"
 #include "Global.hpp"
 #include "ThreadAnalyze.hpp"
+#include "WidgetDestination.hpp"
 #include "WindowAnalyze.hpp"
 #include "WindowDiff.hpp"
 #include "ui_MainWindow.h"
@@ -53,7 +53,7 @@ void MainWindow::refreshDestinations()
 
     // Create the new destinations
     QList<QStorageInfo> Storages = QStorageInfo::mountedVolumes();
-    Destination* Device          = nullptr;
+    WidgetDestination* Device    = nullptr;
     int Row                      = 0;
     int Column                   = 0;
 
@@ -62,7 +62,7 @@ void MainWindow::refreshDestinations()
 
         // Add only !root/RW/valid/ready devices
         if (!Storage.isRoot() && !Storage.isReadOnly() && Storage.isValid() && Storage.isReady()) {
-            Device = new Destination(Storage);
+            Device = new WidgetDestination(Storage);
             this->DestinationList << Device;
 
             // Add the widget to the UI, and create another line if destination line is full
