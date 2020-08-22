@@ -11,10 +11,13 @@ WindowAnalyze::WindowAnalyze(int progresscount) : QWidget(nullptr), ui(new Ui::W
     setWindowTitle(WINDOW_TITLE);
     setWindowModality(Qt::ApplicationModal);
     setWindowFlags(Qt::CustomizeWindowHint | Qt::WindowTitleHint);
+    setMinimumWidth(PROGRESS_WINDOW_MIN_WIDTH);
 
     connect(ThreadAnalyze::instance(), &ThreadAnalyze::parsingFile, this, &WindowAnalyze::parsingFile, Qt::QueuedConnection);
     connect(ThreadAnalyze::instance(), &ThreadAnalyze::parsingNextDirectory, this, &WindowAnalyze::parsingNextDirectory, Qt::QueuedConnection);
     connect(ui->ButtonCancel, &QPushButton::clicked, ThreadAnalyze::instance(), &ThreadAnalyze::requestInterruption, Qt::QueuedConnection);
+
+    adjustSize();
 }
 
 WindowAnalyze::~WindowAnalyze()

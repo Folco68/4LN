@@ -20,8 +20,10 @@ SOURCES += \
     DriveData.cpp \
     FileData.cpp \
     ThreadAnalyze.cpp \
+    ThreadClone.cpp \
     WidgetDestination.cpp \
     WindowAnalyze.cpp \
+    WindowClone.cpp \
     WindowDiff.cpp \
     main.cpp \
     MainWindow.cpp
@@ -33,14 +35,17 @@ HEADERS += \
     Global.hpp \
     MainWindow.hpp \
     ThreadAnalyze.hpp \
+    ThreadClone.hpp \
     WidgetDestination.hpp \
     WindowAnalyze.hpp \
+    WindowClone.hpp \
     WindowDiff.hpp
 
 FORMS += \
     MainWindow.ui \
     WidgetDestination.ui \
     WindowAnalyze.ui \
+    WindowClone.ui \
     WindowDiff.ui
 
 # Default rules for deployment.

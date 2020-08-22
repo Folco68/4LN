@@ -1,8 +1,8 @@
 #include "MainWindow.hpp"
 #include "Global.hpp"
 #include "ThreadAnalyze.hpp"
+#include "ThreadClone.hpp"
 #include "WidgetDestination.hpp"
-#include "WindowAnalyze.hpp"
 #include "WindowDiff.hpp"
 #include "ui_MainWindow.h"
 #include <QBoxLayout>
@@ -33,6 +33,14 @@ MainWindow::MainWindow(QWidget* parent) : QMainWindow(parent), ui(new Ui::MainWi
     connect(ui->ButtonRefresh, &QPushButton::clicked, [this]() { refreshDestinations(); });
     connect(ui->ButtonClone, &QPushButton::clicked, [this]() { clone(); });
     connect(ui->ButtonBrowse, &QPushButton::clicked, [this]() { browseSource(); });
+
+    // End of analyze thread
+    connect(ThreadAnalyze::instance(), &ThreadAnalyze::analyzeComplete, this, &MainWindow::analyzeComplete, Qt::QueuedConnection);
+    connect(ThreadAnalyze::instance(), &ThreadAnalyze::finished, this, &MainWindow::deleteWindowAnalyze, Qt::QueuedConnection);
+
+    // End of clone thread
+    connect(ThreadClone::instance(), &ThreadClone::cloneComplete, this, &MainWindow::cloneComplete, Qt::QueuedConnection);
+    connect(ThreadClone::instance(), &ThreadClone::finished, this, &MainWindow::deleteWindowClone, Qt::QueuedConnection);
 }
 
 MainWindow::~MainWindow()
@@ -86,14 +94,10 @@ void MainWindow::refreshDestinations()
 void MainWindow::clone()
 {
     // Create and show the progress window
-    this->Window = new WindowAnalyze(selectedDrivesCount());
-    this->Window->show();
+    this->WAnalyze = new WindowAnalyze(selectedDrivesCount());
+    this->WAnalyze->show();
 
-    // End of thread handling
-    connect(ThreadAnalyze::instance(), &ThreadAnalyze::analyzeComplete, this, &MainWindow::analyzeComplete, Qt::QueuedConnection);
-    connect(ThreadAnalyze::instance(), &ThreadAnalyze::finished, this, &MainWindow::deleteWindowAnalyze, Qt::QueuedConnection);
-
-    // Finally, start the analyzer thread
+    // Start the analyzer thread
     ThreadAnalyze::instance()->analyze(ui->EditDirectory->text(), selectedDrives());
 }
 
@@ -162,11 +166,26 @@ int MainWindow::selectedDrivesCount() const
 void MainWindow::analyzeComplete()
 {
     WindowDiff* window = new WindowDiff;
-    window->exec();
+    if (window->exec() == QDialog::Accepted) {
+        this->WClone = new WindowClone(selectedDrivesCount());
+        this->WClone->show();
+
+        ThreadClone::instance()->clone();
+    }
+
     delete window;
 }
 
 void MainWindow::deleteWindowAnalyze()
 {
-    this->Window->deleteLater();
+    this->WAnalyze->deleteLater();
+}
+
+void MainWindow::cloneComplete()
+{
+}
+
+void MainWindow::deleteWindowClone()
+{
+    this->WClone->deleteLater();
 }

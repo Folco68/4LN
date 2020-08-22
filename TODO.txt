@@ -1,5 +1,8 @@
 - ensure source dir still exists when refreshing
 - race condition: cloning can be performed between analyze and Window diff pop up
+- Why parsingFile/parsingNextDirectory are public in WindowAnalyze?
+- really need ThreadClone::clone method? Could use directly ThreadClone::start() instead?
+- check that drive exists before performing clone process
 
 // Path/directory
 static  toNAtiveSeparator()   -> make / become \ on Windows

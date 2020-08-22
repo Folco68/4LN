@@ -3,6 +3,7 @@
 
 #include "WidgetDestination.hpp"
 #include "WindowAnalyze.hpp"
+#include "WindowClone.hpp"
 #include <QGridLayout>
 #include <QList>
 #include <QMainWindow>
@@ -26,12 +27,12 @@ private:
     Ui::MainWindow* ui;
     QGridLayout* DestinationGrid;
     QList<WidgetDestination*> DestinationList;
-    WindowAnalyze* Window;
+    WindowAnalyze* WAnalyze;
+    WindowClone* WClone;
 
     void updateUI();
     QList<QString> selectedDrives() const;
     int selectedDrivesCount() const;
-    void deleteWindowAnalyze();
 
     // Buttons
     void refreshDestinations();
@@ -40,6 +41,9 @@ private:
 
     // Slots
     void analyzeComplete();
+    void deleteWindowAnalyze();
+    void cloneComplete();
+    void deleteWindowClone();
 };
 
 #define HZ_DEST_MAX 5

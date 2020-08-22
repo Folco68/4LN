@@ -1,6 +1,7 @@
 #include "DriveData.hpp"
+#include <QDir>
 
-DriveData::DriveData(QString basepath) : BasePath(basepath)
+DriveData::DriveData(QString basepath) : BasePath(QDir::cleanPath(basepath))
 {
 }
 
@@ -22,4 +23,27 @@ FileData* DriveData::file(int index)
 void DriveData::addFile(FileData file)
 {
     this->FileList.append(file);
+}
+
+QList<FileData> DriveData::filesMarkedForDeletion() const
+{
+    QList<FileData> list;
+    for (int i = 0; i < this->FileList.count(); i++) {
+        if (this->FileList.at(i).process() == DELETE_FILE) {
+            list << this->FileList.at(i);
+        }
+    }
+    return list;
+}
+
+QList<FileData> DriveData::filesMarkedForCopy() const
+{
+    QList<FileData> list;
+    for (int i = 0; i < this->FileList.count(); i++) {
+
+        if (this->FileList.at(i).process() == COPY_FILE) {
+            list << this->FileList.at(i);
+        }
+    }
+    return list;
 }

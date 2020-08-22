@@ -49,27 +49,39 @@ void ThreadAnalyze::run()
     for (int i = 0; i < CopyData::instance()->destinationCount(); i++) {
         emit parsingNextDirectory();
 
-        // Parse every file of a destination
-        for (int j = 0; j < CopyData::instance()->destinationDrive(i)->fileCount(); j++) {
-            FileData* destfile = CopyData::instance()->destinationDrive(i)->file(j);
-            emit parsingFile(destfile->filename());
+        // Parse every file of the source
+        for (int j = 0; j < CopyData::instance()->sourceDrive()->fileCount(); j++) {
+            FileData* srcfile = CopyData::instance()->sourceDrive()->file(j);
+            emit parsingFile(srcfile->filename());
 
-            // Compare to every file of the source
-            for (int k = 0; k < CopyData::instance()->sourceDrive()->fileCount(); k++) {
-                FileData* srcfile = CopyData::instance()->sourceDrive()->file(k);
+            bool NonExistingFile = true;
+
+            // Compare to every file of every destination
+            for (int k = 0; k < CopyData::instance()->destinationDrive(i)->fileCount(); k++) {
+                FileData* destfile = CopyData::instance()->destinationDrive(i)->file(k);
 
                 // First quick check, keep deletion flag if names mismatch
                 if (srcfile->filename().compare(destfile->filename(), Qt::CaseInsensitive) != 0) {
                     continue;
                 }
 
-                // Else compare size, and don't copy if the files are large enough
+                // Else compare size, and don't copy if file is large enough
                 if ((srcfile->size() == destfile->size()) && (srcfile->size() > OVERWRITE_MAXIMUM_SIZE)) {
                     destfile->setProcess(IGNORE_FILE);
+                    NonExistingFile = false;
+                    break;
                 }
                 else {
                     destfile->setProcess(COPY_FILE);
+                    NonExistingFile = false;
+                    break;
                 }
+            }
+
+            if (NonExistingFile) {
+                FileData NewFile = *srcfile;
+                NewFile.setProcess(COPY_FILE);
+                CopyData::instance()->destinationDrive(i)->addFile(NewFile);
             }
 
             // Check if the user wants to cancel the analyze process
@@ -112,11 +124,11 @@ void ThreadAnalyze::parseDirectory(DriveData* drive, QString path)
         }
         else {
             if (path.isEmpty()) {
-                FileData item(drive->basePath(), strlist.at(i), QFileInfo(filename).size());
+                FileData item(strlist.at(i), QFileInfo(filename).size());
                 drive->addFile(item);
             }
             else {
-                FileData item(drive->basePath(), path + QDir::separator() + strlist.at(i), QFileInfo(filename).size());
+                FileData item(path + QDir::separator() + strlist.at(i), QFileInfo(filename).size());
                 drive->addFile(item);
             }
         }

@@ -1,12 +1,7 @@
 #include "FileData.hpp"
 
-FileData::FileData(QString path, QString filename, qint64 size) : Path(path), Filename(filename), Size(size), Process(DELETE_FILE)
+FileData::FileData(QString filename, qint64 size) : Filename(filename), Size(size), Process(DELETE_FILE)
 {
-}
-
-QString FileData::path() const
-{
-    return this->Path;
 }
 
 QString FileData::filename() const

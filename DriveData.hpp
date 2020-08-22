@@ -13,6 +13,8 @@ class DriveData
     int fileCount() const;
     FileData* file(int index);
     void addFile(FileData file);
+    QList<FileData> filesMarkedForDeletion() const;
+    QList<FileData> filesMarkedForCopy() const;
 
   private:
     QString BasePath;
