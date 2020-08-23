@@ -3,10 +3,11 @@
 - Why parsingFile/parsingNextDirectory are public in WindowAnalyze?
 - really need ThreadClone::clone method? Could use directly ThreadClone::start() instead?
 - check that drive exists before performing clone process
+- handle folder drop on program icon
 
 // Path/directory
 static  toNAtiveSeparator()   -> make / become \ on Windows
 static  cleanPath()           -> remove last \ or /, . and .. Keep symlinks. Use '/' for any platform
         canonicalPath()       -> remove ., .. and symlinks
 
-=> Prefer QDir::cleanPath(Qdir(xyz).canonicalPath());
+=> Prefer QDir::cleanPath(Qdir(xyz).canonicalPath()); ?

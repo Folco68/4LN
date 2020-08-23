@@ -58,7 +58,12 @@ void ThreadClone::run()
                     // DELETE: erase file from current drive
                 case DELETE_FILE:
                     QString filename = QString("%1%2%3").arg(drive->basePath()).arg(QDir::separator()).arg(file->filename());
-                    QFile::remove(filename);
+                    if (file->type() == TYPE_FILE) {
+                        QFile::remove(filename);
+                    }
+                    else {
+                        QDir(filename).removeRecursively();
+                    }
             }
         }
 
@@ -68,12 +73,24 @@ void ThreadClone::run()
         for (int k = 0; k < copylist.count(); k++) {
             QString src  = QString("%1%2%3").arg(CopyData::instance()->sourceDrive()->basePath()).arg(QDir::separator()).arg(copylist.at(k)->filename());
             QString dest = QString("%1%2%3").arg(drive->basePath()).arg(QDir::separator()).arg(copylist.at(k)->filename());
+            emit copyingFile(dest);
 
-            if (QFile::exists(dest)) {
+            // Source file won't be copied if destination already exists, so we have to remove it first
+            // A directory won't never been flagged as "to be copied" if it already exists in the destination (no size limit or mismatch)
+            if (QFile::exists(dest) && (copylist.at(k)->type() == TYPE_FILE)) {
                 QFile::remove(dest);
             }
 
-            QFile::copy(src, dest);
+            // Perform the copy, depending on the type: file or directory
+            if (copylist.at(k)->type() == TYPE_FILE) {
+                QFile::copy(src, dest);
+            }
+            else {
+                QString newdir = QDir(dest).dirName(); // Name of the directory to create
+                QDir dir(dest);                        // Full path of the directory to create
+                dir.cdUp();                            // One dir up
+                dir.mkdir(newdir);                     // Then perform the creation
+            }
         }
     }
 }

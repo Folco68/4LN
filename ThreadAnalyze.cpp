@@ -54,7 +54,7 @@ void ThreadAnalyze::run()
             FileData* srcfile = CopyData::instance()->sourceDrive()->file(j);
             emit parsingFile(srcfile->filename());
 
-            bool NonExistingFile = true;
+            bool FileFound = false;
 
             // Compare to every file of every destination
             for (int k = 0; k < CopyData::instance()->destinationDrive(i)->fileCount(); k++) {
@@ -65,20 +65,30 @@ void ThreadAnalyze::run()
                     continue;
                 }
 
-                // Else compare size, and don't copy if file is large enough
-                if ((srcfile->size() == destfile->size()) && (srcfile->size() > OVERWRITE_MAXIMUM_SIZE)) {
+                // Name are equal. No additional check needed for a directory
+                if ((srcfile->type() == TYPE_DIRECTORY) && (destfile->type() == TYPE_DIRECTORY)) {
                     destfile->setProcess(IGNORE_FILE);
-                    NonExistingFile = false;
+                    FileFound = true;
                     break;
                 }
+
+                // Compare size, and don't copy the file if it's large enough
+                if ((srcfile->size() == destfile->size()) && (srcfile->size() > OVERWRITE_MAXIMUM_SIZE)) {
+                    destfile->setProcess(IGNORE_FILE);
+                    FileFound = true;
+                    break;
+                }
+                // Sizes mismatch or file is smaller than the limit, copy the source file
+                // Note that we execute that if a file and aa directory have the same name => process is the good one
                 else {
                     destfile->setProcess(COPY_FILE);
-                    NonExistingFile = false;
+                    FileFound = true;
                     break;
                 }
             }
 
-            if (NonExistingFile) {
+            // The source file has not been found in the target, add it manually
+            if (!FileFound) {
                 FileData NewFile = *srcfile;
                 NewFile.setProcess(COPY_FILE);
                 CopyData::instance()->destinationDrive(i)->addFile(NewFile);
@@ -102,35 +112,28 @@ void ThreadAnalyze::parseDirectory(DriveData* drive, QString path)
     // Set directory sorting and filtering
     QDir dir(drive->basePath() + QDir::separator() + path);
     dir.setSorting(QDir::Name | QDir::DirsFirst);
-    dir.setFilter(QDir::AllEntries | QDir::NoDotAndDotDot);
+    dir.setFilter(QDir::AllEntries | QDir::NoDotAndDotDot | QDir::Hidden | QDir::System);
 
     // Get all files/directories contained in the current folder
-    QStringList strlist = dir.entryList();
+    QStringList entrylist = dir.entryList();
 
     // Browse recursively the directories, else add the files to the files list
-    for (int i = 0; i < strlist.count(); i++) {
+    for (int i = 0; i < entrylist.count(); i++) {
         // Parse directories recursively, or add files to the list
-        QString filename = QDir::cleanPath(dir.path() + QDir::separator() + strlist.at(i));
+        QString filename = dir.path() + QDir::separator() + entrylist.at(i);
         emit parsingFile(filename);
 
         if (QFileInfo(filename).isDir()) {
-            // Avoid useless separator if path is empty
-            if (path.isEmpty()) {
-                parseDirectory(drive, strlist.at(i));
-            }
-            else {
-                parseDirectory(drive, path + QDir::separator() + strlist.at(i));
-            }
+            // This is a directory
+            FileData item(path + QDir::separator() + entrylist.at(i), NO_SIZE, DELETE_FILE, TYPE_DIRECTORY);
+            drive->addFile(item);
+
+            parseDirectory(drive, path + QDir::separator() + entrylist.at(i));
         }
         else {
-            if (path.isEmpty()) {
-                FileData item(strlist.at(i), QFileInfo(filename).size());
-                drive->addFile(item);
-            }
-            else {
-                FileData item(path + QDir::separator() + strlist.at(i), QFileInfo(filename).size());
-                drive->addFile(item);
-            }
+            // This is a file
+            FileData item(path + QDir::separator() + entrylist.at(i), QFileInfo(filename).size(), DELETE_FILE, TYPE_FILE);
+            drive->addFile(item);
         }
 
         // Check if the user wants to cancel the analyze process

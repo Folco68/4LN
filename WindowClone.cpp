@@ -2,6 +2,7 @@
 #include "Global.hpp"
 #include "ThreadClone.hpp"
 #include "ui_WindowClone.h"
+#include <QDir>
 
 WindowClone::WindowClone(int progresscount) : ui(new Ui::WindowClone)
 {
@@ -24,15 +25,16 @@ WindowClone::~WindowClone()
     delete ui;
 }
 
-void WindowClone::copyingFile(QString filename)
-{
-    ui->ProgressBar->setFormat(filename);
-}
-
 void WindowClone::copyingNextDrive(QString drivename)
 {
     int Progress = ui->ProgressBar->value() + 1;
     ui->ProgressBar->setValue(Progress);
 
     ui->LabelCloning->setText(tr("Cloning... (%1)").arg(drivename));
+}
+
+void WindowClone::copyingFile(QString filename)
+{
+    QString format = QDir::cleanPath(filename);
+    ui->ProgressBar->setFormat(format);
 }

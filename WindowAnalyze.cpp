@@ -2,6 +2,7 @@
 #include "Global.hpp"
 #include "ThreadAnalyze.hpp"
 #include "ui_WindowAnalyze.h"
+#include <QDir>
 #include <QPushButton>
 
 WindowAnalyze::WindowAnalyze(int progresscount) : QWidget(nullptr), ui(new Ui::WindowAnalyze)
@@ -33,5 +34,6 @@ void WindowAnalyze::parsingNextDirectory()
 
 void WindowAnalyze::parsingFile(QString filename)
 {
-    ui->ProgressBar->setFormat(filename);
+    QString format = QDir::cleanPath(filename);
+    ui->ProgressBar->setFormat(format);
 }
