@@ -25,6 +25,11 @@
 #include <QString>
 #include <QThread>
 
+//
+//  ThreadClone
+//
+// This file perform the cloning operation
+//
 class ThreadClone : public QThread
 {
     Q_OBJECT
@@ -41,6 +46,7 @@ class ThreadClone : public QThread
     void copyingFile(QString filename);
     void copyingNextDrive(QString drivename);
     void cloneComplete();
+    void updateCount(int count);
 };
 
 #endif // THREADCLONE_HPP

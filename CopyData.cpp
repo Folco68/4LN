@@ -41,6 +41,10 @@ CopyData::~CopyData()
     copydata = nullptr;
 }
 
+//  clear
+//
+// Core of the delete operation. Also used when initializing the object
+//
 void CopyData::clear()
 {
     // Delete source
@@ -53,6 +57,10 @@ void CopyData::clear()
     }
 }
 
+//  init
+//
+// Initialize the object with UI data. Needed because this is a singleton, so there is no public constructor
+//
 void CopyData::init(QString source, QList<QString> destinations)
 {
     clear();
@@ -65,17 +73,42 @@ void CopyData::init(QString source, QList<QString> destinations)
     }
 }
 
+//  sourceDrive
+//
+// Return the source drive/path
+//
 DriveData* CopyData::sourceDrive()
 {
     return this->SourceDrive;
 }
 
+//  clear
+//
+// Return the drive with index "index". No check is done
+//
 DriveData* CopyData::destinationDrive(int index)
 {
     return this->DestinationDrives.at(index);
 }
 
+//  destinationCount
+//
+// Return the number of destination drives
+//
 int CopyData::destinationCount() const
 {
     return this->DestinationDrives.count();
+}
+
+//  filesCount
+//
+// Return the count of files of all destinations
+//
+int CopyData::filesCount() const
+{
+    int count = 0;
+    for (int i = 0; i < this->DestinationDrives.count(); i++) {
+        count += this->DestinationDrives.at(i)->fileCount();
+    }
+    return count;
 }

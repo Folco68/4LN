@@ -25,26 +25,46 @@ DriveData::DriveData(QString basepath) : BasePath(QDir::cleanPath(basepath))
 {
 }
 
+//  basePath
+//
+// Return the base path of the drive
+//
 QString DriveData::basePath() const
 {
     return this->BasePath;
 }
 
+//  fileCount
+//
+// Return the number of files+directories contained by the drive
+//
 int DriveData::fileCount() const
 {
     return this->FileList.count();
 }
 
+//  file
+//
+// Return the file with index "index"
+//
 FileData* DriveData::file(int index)
 {
     return &this->FileList[index];
 }
 
+//  addFile
+//
+// Add a file to the the list
+//
 void DriveData::addFile(FileData file)
 {
     this->FileList.append(file);
 }
 
+//  filesMarkedForDeletion
+//
+// Return the list of files flagged for deletion. Used by the diff window
+//
 QList<FileData> DriveData::filesMarkedForDeletion() const
 {
     QList<FileData> list;
@@ -56,11 +76,14 @@ QList<FileData> DriveData::filesMarkedForDeletion() const
     return list;
 }
 
+//  filesMarkedForCopy
+//
+// Return the list of files flagged for copy. Used by the diff window
+//
 QList<FileData> DriveData::filesMarkedForCopy() const
 {
     QList<FileData> list;
     for (int i = 0; i < this->FileList.count(); i++) {
-
         if (this->FileList.at(i).process() == COPY_FILE) {
             list << this->FileList.at(i);
         }

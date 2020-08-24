@@ -144,10 +144,11 @@ void ThreadAnalyze::parseDirectory(DriveData* drive, QString path)
         emit parsingFile(filename);
 
         if (QFileInfo(filename).isDir()) {
-            // This is a directory
+            // This is a directory, add it to the list
             FileData item(path + QDir::separator() + entrylist.at(i), NO_SIZE, DELETE_FILE, TYPE_DIRECTORY);
             drive->addFile(item);
 
+            // And parse it
             parseDirectory(drive, path + QDir::separator() + entrylist.at(i));
         }
         else {

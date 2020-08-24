@@ -35,6 +35,11 @@ class MainWindow;
 }
 QT_END_NAMESPACE
 
+//
+//  MainWindow
+//
+// This class describes the main interface
+//
 class MainWindow : public QMainWindow
 {
     Q_OBJECT

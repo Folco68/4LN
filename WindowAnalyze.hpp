@@ -28,6 +28,11 @@ namespace Ui {
 class WindowAnalyze;
 }
 
+//
+//  WindowAnalyze
+//
+// This window is displayed when the thread process is running
+//
 class WindowAnalyze : public QWidget
 {
     Q_OBJECT

@@ -27,6 +27,11 @@ namespace Ui {
 class WindowHelp;
 }
 
+//
+//  WindowHelp
+//
+// This window displays License/About/Changelog files
+//
 class WindowHelp : public QDialog
 {
     Q_OBJECT

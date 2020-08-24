@@ -25,6 +25,11 @@
 #include <QList>
 #include <QString>
 
+//
+//  DriveData
+//
+// This class describes the source directory or a destination drive
+//
 class DriveData
 {
   public:

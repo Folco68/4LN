@@ -25,15 +25,24 @@
 #include <QList>
 #include <QString>
 
+//
+//  CopyData
+//
+// This class contains all the data used to perform cloning:
+// - input data from UI
+// - data resulting from the analyze thread and used to execute cloning
+//
 class CopyData
 {
   public:
     static CopyData* instance();
     static void release();
+
     void init(QString source, QList<QString> destinations);
+    int destinationCount() const;
+    int filesCount() const;
     DriveData* sourceDrive();
     DriveData* destinationDrive(int index);
-    int destinationCount() const;
 
   private:
     static CopyData* copydata;

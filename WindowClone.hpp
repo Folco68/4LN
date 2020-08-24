@@ -28,6 +28,11 @@ namespace Ui {
 class WindowClone;
 }
 
+//
+//  WindowClone
+//
+// This window is displayed when the cloning process is running
+//
 class WindowClone : public QWidget
 {
     Q_OBJECT
@@ -41,6 +46,7 @@ class WindowClone : public QWidget
 
     void copyingFile(QString filename);
     void copyingNextDrive(QString drivename);
+    void updateCount(int count);
 };
 
 #endif // WINDOWCLONE_HPP

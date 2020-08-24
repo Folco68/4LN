@@ -27,6 +27,11 @@ namespace Ui {
 class WindowDiff;
 }
 
+//
+//  WindowDiff
+//
+// This window displays the result computed by the analyze thread
+//
 class WindowDiff : public QDialog
 {
     Q_OBJECT

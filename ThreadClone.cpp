@@ -80,7 +80,15 @@ void ThreadClone::run()
                         QDir(filename).removeRecursively();
                     }
             }
+
+            // Check if the user wants to interrupt the thread
+            if (isInterruptionRequested()) {
+                return;
+            }
         }
+
+        // Change progress count to add the Copy List files count
+        emit(updateCount(copylist.count()));
 
         // Second pass:
         // - delete destination file if it already exists
@@ -105,6 +113,11 @@ void ThreadClone::run()
                 QDir dir(dest);                        // Full path of the directory to create
                 dir.cdUp();                            // One dir up
                 dir.mkdir(newdir);                     // Then perform the creation
+            }
+
+            // Check if the user wants to interrupt the thread
+            if (isInterruptionRequested()) {
+                return;
             }
         }
     }

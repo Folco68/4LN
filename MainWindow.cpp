@@ -19,6 +19,7 @@
  */
 
 #include "MainWindow.hpp"
+#include "CopyData.hpp"
 #include "Global.hpp"
 #include "ThreadAnalyze.hpp"
 #include "ThreadClone.hpp"
@@ -79,6 +80,10 @@ MainWindow::~MainWindow()
     }
 }
 
+//  refreshDestinations
+//
+// Update the list drives available for cloning
+//
 void MainWindow::refreshDestinations()
 {
     // Clear previous destinations
@@ -118,6 +123,10 @@ void MainWindow::refreshDestinations()
     updateUI();
 }
 
+//  clone
+//
+// Start the analyze process
+//
 void MainWindow::clone()
 {
     // Create and show the progress window
@@ -143,6 +152,10 @@ void MainWindow::browseSource()
     }
 }
 
+//  setSource
+//
+// Called by the browseSource method, or when the program is run by dropping a directory on its icon
+//
 void MainWindow::setSource(QString directory)
 {
     ui->EditDirectory->setText(QDir::cleanPath(QDir(directory).canonicalPath()));
@@ -153,8 +166,6 @@ void MainWindow::setSource(QString directory)
 //  updateUI
 //
 // Update destinations and "Clone" button
-//
-
 void MainWindow::updateUI()
 {
     // Shortcuts
@@ -171,6 +182,10 @@ void MainWindow::updateUI()
     adjustSize();
 }
 
+//  selectedDrives
+//
+// Return the list of the drives selected by the user
+//
 QList<QString> MainWindow::selectedDrives() const
 {
     QList<QString> Drives;
@@ -183,6 +198,10 @@ QList<QString> MainWindow::selectedDrives() const
     return Drives;
 }
 
+//  selectedDriveCount
+//
+// Return the count of selected drives
+//
 int MainWindow::selectedDrivesCount() const
 {
     int count = 0;
@@ -195,11 +214,15 @@ int MainWindow::selectedDrivesCount() const
     return count;
 }
 
+//  analyzeComplete
+//
+// Called at the end of analyzis process. Display a diff window, asking a confirmation before starting the cloning process
+//
 void MainWindow::analyzeComplete()
 {
     WindowDiff* window = new WindowDiff;
     if (window->exec() == QDialog::Accepted) {
-        this->WClone = new WindowClone(selectedDrivesCount());
+        this->WClone = new WindowClone(CopyData::instance()->filesCount());
         this->WClone->show();
 
         ThreadClone::instance()->start();
@@ -213,9 +236,14 @@ void MainWindow::deleteWindowAnalyze()
     this->WAnalyze->deleteLater();
 }
 
+//  cloneComplete
+//
+// Called at the end of clone process. Display a dialog and refresh the drive list (which unselect them)
+//
 void MainWindow::cloneComplete()
 {
     QMessageBox::information(this, WINDOW_TITLE, tr("Cloning process complete."), QMessageBox::Ok);
+    refreshDestinations();
 }
 
 void MainWindow::deleteWindowClone()

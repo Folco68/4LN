@@ -23,10 +23,18 @@
 
 #include <QString>
 
+// Operation performed on the file/directory
 typedef enum { DELETE_FILE, COPY_FILE, IGNORE_FILE } FILE_PROCESS;
+
+// File type (regular file or directory)
 typedef enum { TYPE_DIRECTORY, TYPE_FILE } FILE_TYPE;
 #define NO_SIZE 0
 
+//
+//  FileData
+//
+// This class describes an entry (file or directory) in the source or in a destination
+//
 class FileData
 {
   public:

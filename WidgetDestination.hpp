@@ -30,6 +30,11 @@ namespace Ui {
 class Destination;
 }
 
+//
+//  WidgetDestination
+//
+// This widget contains a checkbox and a drive letter. It allows the user to set the drives to be cloned
+//
 class WidgetDestination : public QWidget
 {
     Q_OBJECT

@@ -25,6 +25,11 @@
 #include <QObject>
 #include <QThread>
 
+//
+//  ThreadAnalyze
+//
+// This class describes the thread which compares source and destinations, to set the corresponding process for each file
+//
 class ThreadAnalyze : public QThread
 {
     Q_OBJECT

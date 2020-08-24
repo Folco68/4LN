@@ -35,6 +35,7 @@ WindowClone::WindowClone(int progresscount) : ui(new Ui::WindowClone)
 
     connect(ThreadClone::instance(), &ThreadClone::copyingFile, this, &WindowClone::copyingFile, Qt::QueuedConnection);
     connect(ThreadClone::instance(), &ThreadClone::copyingNextDrive, this, &WindowClone::copyingNextDrive, Qt::QueuedConnection);
+    connect(ThreadClone::instance(), &ThreadClone::updateCount, this, &WindowClone::updateCount, Qt::QueuedConnection);
     connect(ui->ButtonCancel, &QPushButton::clicked, ThreadClone::instance(), &ThreadClone::requestInterruption, Qt::QueuedConnection);
 
     adjustSize();
@@ -47,14 +48,20 @@ WindowClone::~WindowClone()
 
 void WindowClone::copyingNextDrive(QString drivename)
 {
-    int Progress = ui->ProgressBar->value() + 1;
-    ui->ProgressBar->setValue(Progress);
-
     ui->LabelCloning->setText(tr("Cloning... (%1)").arg(drivename));
 }
 
 void WindowClone::copyingFile(QString filename)
 {
+    int Progress = ui->ProgressBar->value() + 1;
+    ui->ProgressBar->setValue(Progress);
+
     QString format = QDir::cleanPath(filename);
     ui->ProgressBar->setFormat(format);
+}
+
+void WindowClone::updateCount(int count)
+{
+    int CurrentMax = ui->ProgressBar->maximum();
+    ui->ProgressBar->setMaximum(CurrentMax + count);
 }

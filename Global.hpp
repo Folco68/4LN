@@ -22,7 +22,7 @@
 #define GLOBAL_HPP
 
 // Title of windows
-#define WINDOW_TITLE "Multiple Destinations Copier - by MDS for GBY"
+#define WINDOW_TITLE "MDC - Multiple Destinations Copier - by MDS for GBY"
 
 // Minimum width of the progress windows (analyze and clone operations)
 #define PROGRESS_WINDOW_MIN_WIDTH 700
