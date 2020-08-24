@@ -90,6 +90,13 @@
     <item>
      <layout class="QHBoxLayout" name="HLayoutButtons">
       <item>
+       <widget class="QPushButton" name="ButtonHelp">
+        <property name="text">
+         <string>Help</string>
+        </property>
+       </widget>
+      </item>
+      <item>
        <spacer name="HSpacerButtons">
         <property name="orientation">
          <enum>Qt::Horizontal</enum>

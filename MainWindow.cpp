@@ -1,9 +1,30 @@
+/*
+ * MDC - Multiple Destinations Copier - batch copier to clone a content into several drives at once
+ * Copyright (C) 2020 Martial Demolins AKA Folco
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <https://www.gnu.org/licenses/>.
+ *
+ * mail: martial <dot> demolins <at> gmail <dot> com
+ */
+
 #include "MainWindow.hpp"
 #include "Global.hpp"
 #include "ThreadAnalyze.hpp"
 #include "ThreadClone.hpp"
 #include "WidgetDestination.hpp"
 #include "WindowDiff.hpp"
+#include "WindowHelp.hpp"
 #include "ui_MainWindow.h"
 #include <QBoxLayout>
 #include <QCheckBox>
@@ -17,7 +38,7 @@
 #include <QString>
 #include <QVBoxLayout>
 
-MainWindow::MainWindow(QWidget* parent) : QMainWindow(parent), ui(new Ui::MainWindow)
+MainWindow::MainWindow(QString directory) : ui(new Ui::MainWindow)
 {
     // Setup UI
     ui->setupUi(this);
@@ -33,6 +54,7 @@ MainWindow::MainWindow(QWidget* parent) : QMainWindow(parent), ui(new Ui::MainWi
     connect(ui->ButtonRefresh, &QPushButton::clicked, [this]() { refreshDestinations(); });
     connect(ui->ButtonClone, &QPushButton::clicked, [this]() { clone(); });
     connect(ui->ButtonBrowse, &QPushButton::clicked, [this]() { browseSource(); });
+    connect(ui->ButtonHelp, &QPushButton::clicked, [this]() { WindowHelp::openWindowHelp(this); });
 
     // End of analyze thread
     connect(ThreadAnalyze::instance(), &ThreadAnalyze::analyzeComplete, this, &MainWindow::analyzeComplete, Qt::QueuedConnection);
@@ -41,6 +63,11 @@ MainWindow::MainWindow(QWidget* parent) : QMainWindow(parent), ui(new Ui::MainWi
     // End of clone thread
     connect(ThreadClone::instance(), &ThreadClone::cloneComplete, this, &MainWindow::cloneComplete, Qt::QueuedConnection);
     connect(ThreadClone::instance(), &ThreadClone::finished, this, &MainWindow::deleteWindowClone, Qt::QueuedConnection);
+
+    // Handles argument passed to the program through the OS
+    if (QFileInfo(directory).isDir()) {
+        setSource(directory);
+    }
 }
 
 MainWindow::~MainWindow()
@@ -112,9 +139,14 @@ void MainWindow::browseSource()
     // Open directory selection
     QString Source = QFileDialog::getExistingDirectory(this, tr("Select source directory"), directory);
     if (!Source.isEmpty()) {
-        ui->EditDirectory->setText(QDir::cleanPath(QDir(Source).canonicalPath()));
-        updateUI();
+        setSource(Source);
     }
+}
+
+void MainWindow::setSource(QString directory)
+{
+    ui->EditDirectory->setText(QDir::cleanPath(QDir(directory).canonicalPath()));
+    updateUI();
 }
 
 //
@@ -170,7 +202,7 @@ void MainWindow::analyzeComplete()
         this->WClone = new WindowClone(selectedDrivesCount());
         this->WClone->show();
 
-        ThreadClone::instance()->clone();
+        ThreadClone::instance()->start();
     }
 
     delete window;
@@ -183,6 +215,7 @@ void MainWindow::deleteWindowAnalyze()
 
 void MainWindow::cloneComplete()
 {
+    QMessageBox::information(this, WINDOW_TITLE, tr("Cloning process complete."), QMessageBox::Ok);
 }
 
 void MainWindow::deleteWindowClone()

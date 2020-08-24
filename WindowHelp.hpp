@@ -18,30 +18,26 @@
  * mail: martial <dot> demolins <at> gmail <dot> com
  */
 
-#ifndef COPYDATA_HPP
-#define COPYDATA_HPP
+#ifndef WINDOWHELP_HPP
+#define WINDOWHELP_HPP
 
-#include "DriveData.hpp"
-#include <QList>
-#include <QString>
+#include <QDialog>
 
-class CopyData
+namespace Ui {
+class WindowHelp;
+}
+
+class WindowHelp : public QDialog
 {
+    Q_OBJECT
+
   public:
-    static CopyData* instance();
-    static void release();
-    void init(QString source, QList<QString> destinations);
-    DriveData* sourceDrive();
-    DriveData* destinationDrive(int index);
-    int destinationCount() const;
+    static void openWindowHelp(QWidget* parent);
 
   private:
-    static CopyData* copydata;
-    ~CopyData();
-    void clear();
-
-    DriveData* SourceDrive = nullptr;
-    QList<DriveData*> DestinationDrives;
+    explicit WindowHelp(QWidget* parent);
+    ~WindowHelp();
+    Ui::WindowHelp* ui;
 };
 
-#endif // COPYDATA_HPP
+#endif // WINDOWHELP_HPP

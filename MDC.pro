@@ -25,6 +25,7 @@ SOURCES += \
     WindowAnalyze.cpp \
     WindowClone.cpp \
     WindowDiff.cpp \
+    WindowHelp.cpp \
     main.cpp \
     MainWindow.cpp
 
@@ -39,14 +40,16 @@ HEADERS += \
     WidgetDestination.hpp \
     WindowAnalyze.hpp \
     WindowClone.hpp \
-    WindowDiff.hpp
+    WindowDiff.hpp \
+    WindowHelp.hpp
 
 FORMS += \
     MainWindow.ui \
     WidgetDestination.ui \
     WindowAnalyze.ui \
     WindowClone.ui \
-    WindowDiff.ui
+    WindowDiff.ui \
+    WindowHelp.ui
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin
@@ -55,3 +58,6 @@ else: unix:!android: target.path = /opt/$${TARGET}/bin
 
 DISTFILES += \
     TODO.txt
+
+RESOURCES += \
+    Docs.qrc
