@@ -1,4 +1,7 @@
 2020/09/12
+- bumped version to 1.1
+
+2020/09/12
 - source directory can be set by dropping a directory icon into the source box
 - renamed the soft from MDC to 4LN
 - main window is now hidden when thread pocesses window are running

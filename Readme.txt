@@ -1,8 +1,8 @@
 4LN - Multi Destinations Copier by Martial Demolins
-Version: 1.0
+Version: 1.1
 License: GPL v3+ (https://www.gnu.org/licenses/gpl-3.0.txt)
 Source + download page: https://github.com/Folcogh/4LN (or, for TP users, \Partage_Techniciens\Demolins\Softs\4LN)
-Bug reports and suggestions: martial <dot> demolins <at> gmail <dot> com
+Bug reports and suggestions: martial <dot> demolins <at> gmail <dot> com or martial < dot> demolins < at> tetrapak <dot> com
 
 
 How to
