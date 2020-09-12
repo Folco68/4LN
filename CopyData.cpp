@@ -1,5 +1,5 @@
 /*
- * MDC - Multiple Destinations Copier - batch copier to clone a content into several drives at once
+ * 4LN - batch copier to clone a content into several drives at once
  * Copyright (C) 2020 Martial Demolins AKA Folco
  *
  * This program is free software: you can redistribute it and/or modify

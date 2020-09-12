@@ -1,3 +1,9 @@
+2020/09/12
+- source directory can be set by dropping a directory icon into the source box
+- renamed the soft from MDC to 4LN
+- main window is now hidden when thread pocesses window are running
+- process windows can now be reduced in the Windows task bar
+
 2020/08/23
 - added a lot of class and function comments
 - changed the way the progress bar is used during clone process

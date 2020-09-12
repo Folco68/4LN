@@ -19,6 +19,7 @@ SOURCES += \
     CopyData.cpp \
     DriveData.cpp \
     FileData.cpp \
+    SourceBox.cpp \
     ThreadAnalyze.cpp \
     ThreadClone.cpp \
     WidgetDestination.cpp \
@@ -35,6 +36,7 @@ HEADERS += \
     FileData.hpp \
     Global.hpp \
     MainWindow.hpp \
+    SourceBox.hpp \
     ThreadAnalyze.hpp \
     ThreadClone.hpp \
     WidgetDestination.hpp \

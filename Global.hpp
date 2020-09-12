@@ -1,5 +1,5 @@
 /*
- * MDC - Multiple Destinations Copier - batch copier to clone a content into several drives at once
+ * 4LN - Multiple Destinations Copier - batch copier to clone a content into several drives at once
  * Copyright (C) 2020 Martial Demolins AKA Folco
  *
  * This program is free software: you can redistribute it and/or modify
@@ -22,10 +22,10 @@
 #define GLOBAL_HPP
 
 // Title of windows
-#define WINDOW_TITLE "MDC - Multiple Destinations Copier - by MDS for GBY"
+#define WINDOW_TITLE "4LN - Multiple USB storages for TPMS"
 
 // Minimum width of the progress windows (analyze and clone operations)
-#define PROGRESS_WINDOW_MIN_WIDTH 700
+#define PROGRESS_WINDOW_MIN_WIDTH 900
 
 // Maximum size (in bytes) to overwrite systematically small files
 #define OVERWRITE_MAXIMUM_SIZE 2000000

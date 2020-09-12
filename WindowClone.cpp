@@ -1,5 +1,5 @@
 /*
- * MDC - Multiple Destinations Copier - batch copier to clone a content into several drives at once
+ * 4LN - Multiple Destinations Copier - batch copier to clone a content into several drives at once
  * Copyright (C) 2020 Martial Demolins AKA Folco
  *
  * This program is free software: you can redistribute it and/or modify
@@ -29,8 +29,7 @@ WindowClone::WindowClone(int progresscount) : ui(new Ui::WindowClone)
     ui->setupUi(this);
     ui->ProgressBar->setMaximum(progresscount);
     setWindowTitle(WINDOW_TITLE);
-    setWindowModality(Qt::ApplicationModal);
-    setWindowFlags(Qt::CustomizeWindowHint | Qt::WindowTitleHint);
+    setWindowFlags(Qt::CustomizeWindowHint | Qt::WindowTitleHint | Qt::WindowMinimizeButtonHint);
     setMinimumWidth(PROGRESS_WINDOW_MIN_WIDTH);
 
     connect(ThreadClone::instance(), &ThreadClone::copyingFile, this, &WindowClone::copyingFile, Qt::QueuedConnection);

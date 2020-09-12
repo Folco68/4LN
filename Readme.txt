@@ -1,7 +1,7 @@
-MDC - Multi Destinations Copier by Martial Demolins
+4LN - Multi Destinations Copier by Martial Demolins
 Version: 1.0
 License: GPL v3+ (https://www.gnu.org/licenses/gpl-3.0.txt)
-Source + download page: https://github.com/Folcogh/MDC (or, for TP users, \Partage_Techniciens\Demolins\Softs\MDC)
+Source + download page: https://github.com/Folcogh/4LN (or, for TP users, \Partage_Techniciens\Demolins\Softs\4LN)
 Bug reports and suggestions: martial <dot> demolins <at> gmail <dot> com
 
 
@@ -9,7 +9,7 @@ How to
 ======
 
 This program is intended to clone a content into multiple drives (like redistributable USB sticks)
-1. Select a source directory (or drag a directory on the program icon)
+1. Select a source directory (or drag a directory on the program icon, or inside the "Source" box)
 2. Select the destinations drives to be cloned, then click the Clone button
 3. Check the diff dialog, showing what will be deleted or copied/overwritten
 4. Click the Clone button to start the process
@@ -21,14 +21,14 @@ This program is intended to clone a content into multiple drives (like redistrib
 /!\ - you can delete or move the source directory after analysis
 /!\ - and certainly many other stupid things
 /!\
-/!\ => the program won't crash, but you could get into data loss. Please don't complain about your own mistakes or stupidity
+/!\ => the program won't crash, but you could get into data loss. Please don't complain about your own mistakes
 
 
 Features
 ========
 
-- directories are cloned, even if they are empty
 - files are deleted if necessary, ignored if the source and destination names match, or copied to the destination if they are not present
+- directories are cloned, even if they are empty
 - by design, files are overwritten in the destination if they size is < 2Mb. It allows the cloner to modify some small data files and ensure they are cloned, without breaking performance
 
 

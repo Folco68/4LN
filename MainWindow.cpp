@@ -1,5 +1,5 @@
 /*
- * MDC - Multiple Destinations Copier - batch copier to clone a content into several drives at once
+ * 4LN - Multiple Destinations Copier - batch copier to clone a content into several drives at once
  * Copyright (C) 2020 Martial Demolins AKA Folco
  *
  * This program is free software: you can redistribute it and/or modify
@@ -21,6 +21,7 @@
 #include "MainWindow.hpp"
 #include "CopyData.hpp"
 #include "Global.hpp"
+#include "SourceBox.hpp"
 #include "ThreadAnalyze.hpp"
 #include "ThreadClone.hpp"
 #include "WidgetDestination.hpp"
@@ -44,6 +45,7 @@ MainWindow::MainWindow(QString directory) : ui(new Ui::MainWindow)
     // Setup UI
     ui->setupUi(this);
     setWindowTitle(WINDOW_TITLE);
+    ui->ButtonHelp->setStyleSheet("Background: yellow");
 
     // Set the layout of the destinations box
     this->DestinationGrid = new QGridLayout(ui->DestinationWidget);
@@ -51,19 +53,24 @@ MainWindow::MainWindow(QString directory) : ui(new Ui::MainWindow)
     // Create device list (will make UI consistent)
     refreshDestinations();
 
-    // Connections
+    // UI connections
     connect(ui->ButtonRefresh, &QPushButton::clicked, [this]() { refreshDestinations(); });
     connect(ui->ButtonClone, &QPushButton::clicked, [this]() { clone(); });
     connect(ui->ButtonBrowse, &QPushButton::clicked, [this]() { browseSource(); });
     connect(ui->ButtonHelp, &QPushButton::clicked, [this]() { WindowHelp::openWindowHelp(this); });
+    connect(ui->BoxSource, &SourceBox::directoryDropped, [this](QString directory) { setSource(directory); });
 
-    // End of analyze thread
-    connect(ThreadAnalyze::instance(), &ThreadAnalyze::analyzeComplete, this, &MainWindow::analyzeComplete, Qt::QueuedConnection);
+    // Connections to analyze thread
+    connect(ThreadAnalyze::instance(), &ThreadAnalyze::started, this, &MainWindow::makeInvisible, Qt::QueuedConnection);
     connect(ThreadAnalyze::instance(), &ThreadAnalyze::finished, this, &MainWindow::deleteWindowAnalyze, Qt::QueuedConnection);
+    connect(ThreadAnalyze::instance(), &ThreadAnalyze::finished, this, &MainWindow::makeVisible, Qt::QueuedConnection);
+    connect(ThreadAnalyze::instance(), &ThreadAnalyze::analyzeComplete, this, &MainWindow::analyzeComplete, Qt::QueuedConnection);
 
-    // End of clone thread
-    connect(ThreadClone::instance(), &ThreadClone::cloneComplete, this, &MainWindow::cloneComplete, Qt::QueuedConnection);
+    // Connections to clone thread
+    connect(ThreadClone::instance(), &ThreadClone::started, this, &MainWindow::makeInvisible, Qt::QueuedConnection);
     connect(ThreadClone::instance(), &ThreadClone::finished, this, &MainWindow::deleteWindowClone, Qt::QueuedConnection);
+    connect(ThreadClone::instance(), &ThreadClone::finished, this, &MainWindow::makeVisible, Qt::QueuedConnection);
+    connect(ThreadClone::instance(), &ThreadClone::cloneComplete, this, &MainWindow::cloneComplete, Qt::QueuedConnection);
 
     // Handles argument passed to the program through the OS
     if (QFileInfo(directory).isDir()) {
@@ -78,6 +85,20 @@ MainWindow::~MainWindow()
     while (!this->DestinationList.isEmpty()) {
         delete this->DestinationList.takeLast();
     }
+}
+
+//  makeVisible
+//
+// Make the main window visible again, after a thread has completed
+//
+void MainWindow::makeVisible()
+{
+    setVisible(true);
+}
+
+void MainWindow::makeInvisible()
+{
+    setVisible(false);
 }
 
 //  refreshDestinations
@@ -107,7 +128,7 @@ void MainWindow::refreshDestinations()
 
             // Add the widget to the UI, and create another line if destination line is full
             this->DestinationGrid->addWidget(Device, Row, Column);
-            if (Column == HZ_DEST_MAX) {
+            if (Column == HZ_DEST_MAX - 1) {
                 Column = 0;
                 Row++;
             }
@@ -221,6 +242,7 @@ int MainWindow::selectedDrivesCount() const
 void MainWindow::analyzeComplete()
 {
     WindowDiff* window = new WindowDiff;
+    // Start the new clone thread if the dialog was accetped
     if (window->exec() == QDialog::Accepted) {
         this->WClone = new WindowClone(CopyData::instance()->filesCount());
         this->WClone->show();
