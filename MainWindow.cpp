@@ -45,7 +45,10 @@ MainWindow::MainWindow(QString directory) : ui(new Ui::MainWindow)
     // Setup UI
     ui->setupUi(this);
     setWindowTitle(WINDOW_TITLE);
+    setMinimumWidth(MAIN_WINDOW_MIN_WIDTH);
     ui->ButtonHelp->setStyleSheet("Background: yellow");
+    ui->SpinboxOverwriteSize->setValue(OVERWRITE_SIZE);
+    ui->SpinboxOverwriteSize->setSingleStep(OVERWRITE_SIZE_STEP);
 
     // Set the layout of the destinations box
     this->DestinationGrid = new QGridLayout(ui->DestinationWidget);
@@ -155,9 +158,13 @@ void MainWindow::clone()
     this->WAnalyze->show();
 
     // Start the analyzer thread
-    ThreadAnalyze::instance()->analyze(ui->EditDirectory->text(), selectedDrives());
+    ThreadAnalyze::instance()->analyze(ui->EditDirectory->text(), selectedDrives(), ui->SpinboxOverwriteSize->value());
 }
 
+//  browseSource
+//
+// Show a window which allow to select a directory
+//
 void MainWindow::browseSource()
 {
     // Default directory

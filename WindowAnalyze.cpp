@@ -53,6 +53,6 @@ void WindowAnalyze::parsingNextDirectory()
 
 void WindowAnalyze::parsingFile(QString filename)
 {
-    QString format = QDir::cleanPath(filename);
+    QString format = QString("%1 (%p%)").arg(QDir::cleanPath(filename));
     ui->ProgressBar->setFormat(format);
 }

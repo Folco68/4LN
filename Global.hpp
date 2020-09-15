@@ -27,7 +27,13 @@
 // Minimum width of the progress windows (analyze and clone operations)
 #define PROGRESS_WINDOW_MIN_WIDTH 900
 
-// Maximum size (in bytes) to overwrite systematically small files
-#define OVERWRITE_MAXIMUM_SIZE 2000000
+// Minimum width of the main window
+#define MAIN_WINDOW_MIN_WIDTH 800
+
+// Default overwrite size (kB)
+#define OVERWRITE_SIZE 100
+
+// Step for overwrite size (kB)
+#define OVERWRITE_SIZE_STEP 100
 
 #endif // GLOBAL_HPP

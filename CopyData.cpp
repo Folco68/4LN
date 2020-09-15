@@ -61,7 +61,7 @@ void CopyData::clear()
 //
 // Initialize the object with UI data. Needed because this is a singleton, so there is no public constructor
 //
-void CopyData::init(QString source, QList<QString> destinations)
+void CopyData::init(QString source, QList<QString> destinations, int overwrite)
 {
     clear();
 
@@ -71,6 +71,8 @@ void CopyData::init(QString source, QList<QString> destinations)
         DriveData* drive = new DriveData(destinations.at(i));
         this->DestinationDrives.append(drive);
     }
+
+    this->OverwriteSize = overwrite;
 }
 
 //  sourceDrive
@@ -111,4 +113,13 @@ int CopyData::filesCount() const
         count += this->DestinationDrives.at(i)->fileCount();
     }
     return count;
+}
+
+//  overwrite
+//
+// Return the maximum size of overwritten files
+//
+int CopyData::overwriteSize() const
+{
+    return this->OverwriteSize;
 }

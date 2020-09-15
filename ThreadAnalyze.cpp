@@ -39,9 +39,9 @@ void ThreadAnalyze::release()
     threadanalyze = nullptr;
 }
 
-void ThreadAnalyze::analyze(QString source, QList<QString> destinations)
+void ThreadAnalyze::analyze(QString source, QList<QString> destinations, int overwrite)
 {
-    CopyData::instance()->init(source, destinations);
+    CopyData::instance()->init(source, destinations, overwrite);
     start();
 }
 
@@ -93,7 +93,8 @@ void ThreadAnalyze::run()
                 }
 
                 // Compare size, and don't copy the file if it's large enough
-                if ((srcfile->size() == destfile->size()) && (srcfile->size() > OVERWRITE_MAXIMUM_SIZE)) {
+                // Overwrite size is in kB, while file size is in bytes
+                if ((srcfile->size() == destfile->size()) && (srcfile->size() > CopyData::instance()->overwriteSize() * 1024)) {
                     destfile->setProcess(IGNORE_FILE);
                     FileFound = true;
                     break;

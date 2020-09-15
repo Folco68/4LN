@@ -1,0 +1,2 @@
+- publish 1.2 with current modifications (overwrite setting + percentage display)
+- rework UI for 1.3

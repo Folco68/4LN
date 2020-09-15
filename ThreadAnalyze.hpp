@@ -38,7 +38,7 @@ class ThreadAnalyze : public QThread
     static ThreadAnalyze* instance();
     static void release();
 
-    void analyze(QString source, QList<QString> destinations);
+    void analyze(QString source, QList<QString> destinations, int overwrite);
 
   private:
     static ThreadAnalyze* threadanalyze;

@@ -38,9 +38,10 @@ class CopyData
     static CopyData* instance();
     static void release();
 
-    void init(QString source, QList<QString> destinations);
+    void init(QString source, QList<QString> destinations, int overwrite);
     int destinationCount() const;
     int filesCount() const;
+    int overwriteSize() const;
     DriveData* sourceDrive();
     DriveData* destinationDrive(int index);
 
@@ -51,6 +52,7 @@ class CopyData
 
     DriveData* SourceDrive = nullptr;
     QList<DriveData*> DestinationDrives;
+    int OverwriteSize;
 };
 
 #endif // COPYDATA_HPP

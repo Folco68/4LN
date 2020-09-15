@@ -55,7 +55,7 @@ void WindowClone::copyingFile(QString filename)
     int Progress = ui->ProgressBar->value() + 1;
     ui->ProgressBar->setValue(Progress);
 
-    QString format = QDir::cleanPath(filename);
+    QString format = QString("%1 (%p%)").arg(QDir::cleanPath(filename));
     ui->ProgressBar->setFormat(format);
 }
 
