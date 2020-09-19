@@ -83,6 +83,7 @@ void ThreadClone::run()
 
             // Check if the user wants to interrupt the thread
             if (isInterruptionRequested()) {
+                emit cloneAborted();
                 return;
             }
         }
@@ -117,6 +118,7 @@ void ThreadClone::run()
 
             // Check if the user wants to interrupt the thread
             if (isInterruptionRequested()) {
+                emit cloneAborted();
                 return;
             }
         }

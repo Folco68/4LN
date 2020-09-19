@@ -106,6 +106,12 @@ void ThreadAnalyze::run()
                     FileFound = true;
                     break;
                 }
+
+                // Check if the user wants to cancel the analyze process
+                if (isInterruptionRequested()) {
+                    emit analyzeAborted();
+                    return;
+                }
             }
 
             // The source file has not been found in the target, add it manually
@@ -114,18 +120,11 @@ void ThreadAnalyze::run()
                 NewFile.setProcess(COPY_FILE);
                 CopyData::instance()->destinationDrive(i)->addFile(NewFile);
             }
-
-            // Check if the user wants to cancel the analyze process
-            if (isInterruptionRequested()) {
-                return;
-            }
         }
     }
 
-    // Emit a signal depending on the thread termination
-    if (!isInterruptionRequested()) {
-        emit analyzeComplete();
-    }
+    // Emit normal termination signal
+    emit analyzeComplete();
 }
 
 void ThreadAnalyze::parseDirectory(DriveData* drive, QString path)

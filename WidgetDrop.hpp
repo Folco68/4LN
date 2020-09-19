@@ -1,20 +1,25 @@
-#ifndef SOURCEBOX_HPP
-#define SOURCEBOX_HPP
+#ifndef WIDGETDROP_HPP
+#define WIDGETDROP_HPP
 
 #include <QDragEnterEvent>
 #include <QDropEvent>
-#include <QGroupBox>
-#include <QList>
-#include <QUrl>
+#include <QString>
+#include <QWidget>
 
-class SourceBox : public QGroupBox
+namespace Ui {
+class WidgetDrop;
+}
+
+class WidgetDrop : public QWidget
 {
     Q_OBJECT
 
   public:
-    explicit SourceBox(QWidget* parent) : QGroupBox(parent) {} // Ctor is mMandatory because the UI factory creates the groupbox with a parent
+    explicit WidgetDrop(QWidget* parent = nullptr);
+    ~WidgetDrop() override;
 
   private:
+    Ui::WidgetDrop* ui;
     void dragEnterEvent(QDragEnterEvent* event) override; // Called when something is dragged over the object
     void dropEvent(QDropEvent* event) override;           // Called when something is dropped on the object
 
@@ -22,4 +27,4 @@ class SourceBox : public QGroupBox
     void directoryDropped(QString directory);
 };
 
-#endif // SOURCEBOX_HPP
+#endif // WIDGETDROP_HPP

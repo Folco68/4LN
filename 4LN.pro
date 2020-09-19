@@ -19,10 +19,11 @@ SOURCES += \
     CopyData.cpp \
     DriveData.cpp \
     FileData.cpp \
-    SourceBox.cpp \
     ThreadAnalyze.cpp \
     ThreadClone.cpp \
     WidgetDestination.cpp \
+    WidgetDrop.cpp \
+    WidgetOverwrite.cpp \
     WindowAnalyze.cpp \
     WindowClone.cpp \
     WindowDiff.cpp \
@@ -36,10 +37,11 @@ HEADERS += \
     FileData.hpp \
     Global.hpp \
     MainWindow.hpp \
-    SourceBox.hpp \
     ThreadAnalyze.hpp \
     ThreadClone.hpp \
     WidgetDestination.hpp \
+    WidgetDrop.hpp \
+    WidgetOverwrite.hpp \
     WindowAnalyze.hpp \
     WindowClone.hpp \
     WindowDiff.hpp \
@@ -48,6 +50,8 @@ HEADERS += \
 FORMS += \
     MainWindow.ui \
     WidgetDestination.ui \
+    WidgetDrop.ui \
+    WidgetOverwrite.ui \
     WindowAnalyze.ui \
     WindowClone.ui \
     WindowDiff.ui \
@@ -62,4 +66,5 @@ DISTFILES += \
     TODO.txt
 
 RESOURCES += \
-    Docs.qrc
+    Docs.qrc \
+    Pictures.qrc

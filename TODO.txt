@@ -1,2 +1,4 @@
-- publish 1.2 with current modifications (overwrite setting + percentage display)
 - rework UI for 1.3
+- disable resize button of Main Window
+- check all included files
+- is member MainStepWindow really usefull ??

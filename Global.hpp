@@ -28,7 +28,10 @@
 #define PROGRESS_WINDOW_MIN_WIDTH 900
 
 // Minimum width of the main window
-#define MAIN_WINDOW_MIN_WIDTH 800
+#define MAIN_WINDOW_MIN_WIDTH 640
+
+// Minimum height of the main window
+#define MAIN_WINDOW_MIN_HEIGHT 480
 
 // Default overwrite size (kB)
 #define OVERWRITE_SIZE 100

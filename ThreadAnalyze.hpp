@@ -50,6 +50,7 @@ class ThreadAnalyze : public QThread
     void analyzeComplete();
     void parsingFile(QString filename);
     void parsingNextDirectory();
+    void analyzeAborted();
 };
 
 #endif // THREADANALYZE_HPP

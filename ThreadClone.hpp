@@ -46,6 +46,7 @@ class ThreadClone : public QThread
     void copyingFile(QString filename);
     void copyingNextDrive(QString drivename);
     void cloneComplete();
+    void cloneAborted();
     void updateCount(int count);
 };
 

@@ -22,12 +22,15 @@
 #define MAINWINDOW_HPP
 
 #include "WidgetDestination.hpp"
+#include "WidgetDrop.hpp"
+#include "WidgetOverwrite.hpp"
 #include "WindowAnalyze.hpp"
 #include "WindowClone.hpp"
-#include <QGridLayout>
 #include <QList>
 #include <QMainWindow>
 #include <QString>
+
+enum { STEP_ZERO /* ;) */, STEP_DROP, STEP_SELECT_DEST, STEP_OVERWRITE, STEP_CLONE };
 
 QT_BEGIN_NAMESPACE
 namespace Ui {
@@ -50,31 +53,23 @@ class MainWindow : public QMainWindow
 
   private:
     Ui::MainWindow* ui;
-    QGridLayout* DestinationGrid;
-    QList<WidgetDestination*> DestinationList;
+    WidgetDrop* DropBox;
+    WidgetDestination* DestinationBox;
+    WidgetOverwrite* OverwriteBox;
     WindowAnalyze* WAnalyze;
     WindowClone* WClone;
+    QString SourceDirectory;
+    int MainWindowStep;
 
+    void changeStep(int mws);
     void updateUI();
-    QList<QString> selectedDrives() const;
-    int selectedDrivesCount() const;
-    void setSource(QString directory);
-    void makeVisible();
-    void makeInvisible();
-
-    // Buttons
-    void refreshDestinations();
-    void clone();
-    void browseSource();
 
     // Slots
     void analyzeComplete();
     void deleteWindowAnalyze();
     void cloneComplete();
     void deleteWindowClone();
+    void threadAborted();
 };
-
-#define HZ_DEST_MAX 5
-//#define DEST_SPACER_SIZE 20
 
 #endif // MAINWINDOW_HPP

@@ -6,80 +6,27 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>607</width>
-    <height>194</height>
+    <width>384</width>
+    <height>70</height>
    </rect>
   </property>
   <widget class="QWidget" name="centralwidget">
    <layout class="QVBoxLayout" name="verticalLayout">
     <item>
-     <widget class="SourceBox" name="BoxSource">
-      <property name="acceptDrops">
-       <bool>true</bool>
+     <spacer name="VSpacerMain">
+      <property name="orientation">
+       <enum>Qt::Vertical</enum>
       </property>
-      <property name="title">
-       <string>Source</string>
+      <property name="sizeType">
+       <enum>QSizePolicy::Fixed</enum>
       </property>
-      <layout class="QVBoxLayout" name="verticalLayout_2">
-       <item>
-        <layout class="QHBoxLayout" name="HLayoutSource">
-         <item>
-          <widget class="QLabel" name="LabelDirectory">
-           <property name="text">
-            <string>Select a directory:</string>
-           </property>
-          </widget>
-         </item>
-         <item>
-          <widget class="QLineEdit" name="EditDirectory">
-           <property name="readOnly">
-            <bool>true</bool>
-           </property>
-          </widget>
-         </item>
-         <item>
-          <widget class="QPushButton" name="ButtonBrowse">
-           <property name="text">
-            <string>Browse...</string>
-           </property>
-          </widget>
-         </item>
-        </layout>
-       </item>
-       <item>
-        <widget class="QLabel" name="LabelNote">
-         <property name="text">
-          <string>Note: only the &lt;i&gt;content&lt;/i&gt; of the directory will be cloned, not the directory itself!</string>
-         </property>
-        </widget>
-       </item>
-      </layout>
-     </widget>
-    </item>
-    <item>
-     <widget class="QGroupBox" name="BoxDestination">
-      <property name="title">
-       <string>Destinations</string>
+      <property name="sizeHint" stdset="0">
+       <size>
+        <width>20</width>
+        <height>20</height>
+       </size>
       </property>
-      <layout class="QVBoxLayout" name="verticalLayout_3">
-       <item>
-        <widget class="QLabel" name="LabelNoDestination">
-         <property name="font">
-          <font>
-           <weight>75</weight>
-           <bold>true</bold>
-          </font>
-         </property>
-         <property name="text">
-          <string>No destination available.</string>
-         </property>
-        </widget>
-       </item>
-       <item>
-        <widget class="QWidget" name="DestinationWidget" native="true"/>
-       </item>
-      </layout>
-     </widget>
+     </spacer>
     </item>
     <item>
      <layout class="QHBoxLayout" name="HLayoutButtons">
@@ -88,37 +35,10 @@
         <property name="palette">
          <palette>
           <active>
-           <colorrole role="WindowText">
-            <brush brushstyle="SolidPattern">
-             <color alpha="255">
-              <red>0</red>
-              <green>0</green>
-              <blue>0</blue>
-             </color>
-            </brush>
-           </colorrole>
-           <colorrole role="Text">
-            <brush brushstyle="SolidPattern">
-             <color alpha="255">
-              <red>0</red>
-              <green>0</green>
-              <blue>0</blue>
-             </color>
-            </brush>
-           </colorrole>
            <colorrole role="ButtonText">
             <brush brushstyle="SolidPattern">
              <color alpha="255">
               <red>255</red>
-              <green>0</green>
-              <blue>0</blue>
-             </color>
-            </brush>
-           </colorrole>
-           <colorrole role="PlaceholderText">
-            <brush brushstyle="SolidPattern">
-             <color alpha="128">
-              <red>0</red>
               <green>0</green>
               <blue>0</blue>
              </color>
@@ -126,37 +46,10 @@
            </colorrole>
           </active>
           <inactive>
-           <colorrole role="WindowText">
-            <brush brushstyle="SolidPattern">
-             <color alpha="255">
-              <red>0</red>
-              <green>0</green>
-              <blue>0</blue>
-             </color>
-            </brush>
-           </colorrole>
-           <colorrole role="Text">
-            <brush brushstyle="SolidPattern">
-             <color alpha="255">
-              <red>0</red>
-              <green>0</green>
-              <blue>0</blue>
-             </color>
-            </brush>
-           </colorrole>
            <colorrole role="ButtonText">
             <brush brushstyle="SolidPattern">
              <color alpha="255">
               <red>255</red>
-              <green>0</green>
-              <blue>0</blue>
-             </color>
-            </brush>
-           </colorrole>
-           <colorrole role="PlaceholderText">
-            <brush brushstyle="SolidPattern">
-             <color alpha="128">
-              <red>0</red>
               <green>0</green>
               <blue>0</blue>
              </color>
@@ -164,39 +57,12 @@
            </colorrole>
           </inactive>
           <disabled>
-           <colorrole role="WindowText">
-            <brush brushstyle="SolidPattern">
-             <color alpha="255">
-              <red>255</red>
-              <green>255</green>
-              <blue>0</blue>
-             </color>
-            </brush>
-           </colorrole>
-           <colorrole role="Text">
-            <brush brushstyle="SolidPattern">
-             <color alpha="255">
-              <red>255</red>
-              <green>255</green>
-              <blue>0</blue>
-             </color>
-            </brush>
-           </colorrole>
            <colorrole role="ButtonText">
             <brush brushstyle="SolidPattern">
              <color alpha="255">
-              <red>255</red>
-              <green>255</green>
-              <blue>0</blue>
-             </color>
-            </brush>
-           </colorrole>
-           <colorrole role="PlaceholderText">
-            <brush brushstyle="SolidPattern">
-             <color alpha="128">
-              <red>0</red>
-              <green>0</green>
-              <blue>0</blue>
+              <red>120</red>
+              <green>120</green>
+              <blue>120</blue>
              </color>
             </brush>
            </colorrole>
@@ -212,42 +78,6 @@
         </property>
         <property name="text">
          <string>Help!</string>
-        </property>
-       </widget>
-      </item>
-      <item>
-       <spacer name="HSpacerButtons2">
-        <property name="orientation">
-         <enum>Qt::Horizontal</enum>
-        </property>
-        <property name="sizeHint" stdset="0">
-         <size>
-          <width>40</width>
-          <height>20</height>
-         </size>
-        </property>
-       </spacer>
-      </item>
-      <item>
-       <widget class="QLabel" name="LabelOverwriteSize">
-        <property name="text">
-         <string>Overwrite files which are less than:</string>
-        </property>
-       </widget>
-      </item>
-      <item>
-       <widget class="QSpinBox" name="SpinboxOverwriteSize">
-        <property name="alignment">
-         <set>Qt::AlignCenter</set>
-        </property>
-        <property name="suffix">
-         <string> kB</string>
-        </property>
-        <property name="maximum">
-         <number>1000000</number>
-        </property>
-        <property name="singleStep">
-         <number>1000</number>
         </property>
        </widget>
       </item>
@@ -269,12 +99,31 @@
         <property name="text">
          <string>Refresh</string>
         </property>
+        <property name="icon">
+         <iconset resource="Pictures.qrc">
+          <normaloff>:/pic/USBstick.png</normaloff>:/pic/USBstick.png</iconset>
+        </property>
        </widget>
       </item>
       <item>
-       <widget class="QPushButton" name="ButtonClone">
+       <widget class="QPushButton" name="ButtonPrevious">
         <property name="text">
-         <string>Clone</string>
+         <string>Previous</string>
+        </property>
+        <property name="icon">
+         <iconset resource="Pictures.qrc">
+          <normaloff>:/pic/LeftArrow.png</normaloff>:/pic/LeftArrow.png</iconset>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QPushButton" name="ButtonNext">
+        <property name="text">
+         <string>Next</string>
+        </property>
+        <property name="icon">
+         <iconset resource="Pictures.qrc">
+          <normaloff>:/pic/RightArrow.png</normaloff>:/pic/RightArrow.png</iconset>
         </property>
        </widget>
       </item>
@@ -283,14 +132,8 @@
    </layout>
   </widget>
  </widget>
- <customwidgets>
-  <customwidget>
-   <class>SourceBox</class>
-   <extends>QGroupBox</extends>
-   <header>SourceBox.hpp</header>
-   <container>1</container>
-  </customwidget>
- </customwidgets>
- <resources/>
+ <resources>
+  <include location="Pictures.qrc"/>
+ </resources>
  <connections/>
 </ui>

@@ -1,3 +1,13 @@
+2020/09/20
+- Revamped UI. Use now a wizard-like approach
+- First distribution to BGY for testing purpose
+- Better handling of MainWindow a
+
+2020/09/15
+- added percentage in progress bar of progress windows
+- allowed to set accurately the overwrite size limit
+- bumped do version 1.2
+
 2020/09/12
 - bumped version to 1.1
 

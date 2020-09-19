@@ -21,225 +21,120 @@
 #include "MainWindow.hpp"
 #include "CopyData.hpp"
 #include "Global.hpp"
-#include "SourceBox.hpp"
 #include "ThreadAnalyze.hpp"
 #include "ThreadClone.hpp"
-#include "WidgetDestination.hpp"
 #include "WindowDiff.hpp"
 #include "WindowHelp.hpp"
 #include "ui_MainWindow.h"
 #include <QBoxLayout>
-#include <QCheckBox>
-#include <QDir>
-#include <QFileDialog>
-#include <QHBoxLayout>
-#include <QLabel>
+#include <QFileInfo>
+#include <QLayoutItem>
 #include <QMessageBox>
-#include <QSpacerItem>
-#include <QStorageInfo>
-#include <QString>
-#include <QVBoxLayout>
 
-MainWindow::MainWindow(QString directory) : ui(new Ui::MainWindow)
+MainWindow::MainWindow(QString directory) : ui(new Ui::MainWindow), MainWindowStep(STEP_ZERO)
 {
     // Setup UI
     ui->setupUi(this);
-    setWindowTitle(WINDOW_TITLE);
-    setMinimumWidth(MAIN_WINDOW_MIN_WIDTH);
     ui->ButtonHelp->setStyleSheet("Background: yellow");
-    ui->SpinboxOverwriteSize->setValue(OVERWRITE_SIZE);
-    ui->SpinboxOverwriteSize->setSingleStep(OVERWRITE_SIZE_STEP);
 
-    // Set the layout of the destinations box
-    this->DestinationGrid = new QGridLayout(ui->DestinationWidget);
+    // Setup window
+    setWindowTitle(WINDOW_TITLE);
+    setMinimumSize(MAIN_WINDOW_MIN_WIDTH, MAIN_WINDOW_MIN_HEIGHT);
+    setWindowFlags(Qt::CustomizeWindowHint | Qt::WindowTitleHint | Qt::WindowMinimizeButtonHint | Qt::WindowCloseButtonHint);
 
-    // Create device list (will make UI consistent)
-    refreshDestinations();
+    // Prepare central widgets
+    this->DropBox        = new WidgetDrop;
+    this->DestinationBox = new WidgetDestination;
+    this->OverwriteBox   = new WidgetOverwrite;
 
-    // UI connections
-    connect(ui->ButtonRefresh, &QPushButton::clicked, [this]() { refreshDestinations(); });
-    connect(ui->ButtonClone, &QPushButton::clicked, [this]() { clone(); });
-    connect(ui->ButtonBrowse, &QPushButton::clicked, [this]() { browseSource(); });
+    QBoxLayout* layout = reinterpret_cast<QBoxLayout*>(centralWidget()->layout());
+    layout->insertWidget(0, this->DropBox);
+    layout->insertWidget(0, this->DestinationBox);
+    layout->insertWidget(0, this->OverwriteBox);
+
+    // Button connections
     connect(ui->ButtonHelp, &QPushButton::clicked, [this]() { WindowHelp::openWindowHelp(this); });
-    connect(ui->BoxSource, &SourceBox::directoryDropped, [this](QString directory) { setSource(directory); });
+    connect(ui->ButtonPrevious, &QPushButton::clicked, [this]() { changeStep(this->MainWindowStep - 1); });
+    connect(ui->ButtonNext, &QPushButton::clicked, [this]() { changeStep(this->MainWindowStep + 1); });
+    connect(ui->ButtonRefresh, &QPushButton::clicked, [this]() { this->DestinationBox->refreshDestinations(); });
 
     // Connections to analyze thread
-    connect(ThreadAnalyze::instance(), &ThreadAnalyze::started, this, &MainWindow::makeInvisible, Qt::QueuedConnection);
     connect(ThreadAnalyze::instance(), &ThreadAnalyze::finished, this, &MainWindow::deleteWindowAnalyze, Qt::QueuedConnection);
-    connect(ThreadAnalyze::instance(), &ThreadAnalyze::finished, this, &MainWindow::makeVisible, Qt::QueuedConnection);
     connect(ThreadAnalyze::instance(), &ThreadAnalyze::analyzeComplete, this, &MainWindow::analyzeComplete, Qt::QueuedConnection);
+    connect(ThreadAnalyze::instance(), &ThreadAnalyze::analyzeAborted, this, &MainWindow::threadAborted, Qt::QueuedConnection);
 
     // Connections to clone thread
-    connect(ThreadClone::instance(), &ThreadClone::started, this, &MainWindow::makeInvisible, Qt::QueuedConnection);
     connect(ThreadClone::instance(), &ThreadClone::finished, this, &MainWindow::deleteWindowClone, Qt::QueuedConnection);
-    connect(ThreadClone::instance(), &ThreadClone::finished, this, &MainWindow::makeVisible, Qt::QueuedConnection);
     connect(ThreadClone::instance(), &ThreadClone::cloneComplete, this, &MainWindow::cloneComplete, Qt::QueuedConnection);
+    connect(ThreadClone::instance(), &ThreadClone::cloneAborted, this, &MainWindow::threadAborted, Qt::QueuedConnection);
 
-    // Handles argument passed to the program through the OS
+    // Connection with main widget modules
+    connect(this->DropBox, &WidgetDrop::directoryDropped, [this](QString directory) {
+        this->SourceDirectory = directory;
+        changeStep(STEP_SELECT_DEST);
+    });
+
+    connect(this->DestinationBox, &WidgetDestination::selectionChanged, [this]() { updateUI(); });
+
+    // Handle argument passed to the program through the OS
     if (QFileInfo(directory).isDir()) {
-        setSource(directory);
+        this->SourceDirectory = directory;
+        changeStep(STEP_SELECT_DEST);
     }
+    // Else default to drop box
+    else {
+        changeStep(STEP_DROP);
+    }
+
+    adjustSize();
 }
 
 MainWindow::~MainWindow()
 {
+    delete this->DropBox;
+    delete this->DestinationBox;
     delete ui;
-
-    while (!this->DestinationList.isEmpty()) {
-        delete this->DestinationList.takeLast();
-    }
 }
 
-//  makeVisible
+//  changeStep
 //
-// Make the main window visible again, after a thread has completed
+// Update the central widget of the main window
 //
-void MainWindow::makeVisible()
+void MainWindow::changeStep(int mws)
 {
-    setVisible(true);
-}
-
-void MainWindow::makeInvisible()
-{
-    setVisible(false);
-}
-
-//  refreshDestinations
-//
-// Update the list drives available for cloning
-//
-void MainWindow::refreshDestinations()
-{
-    // Clear previous destinations
-    while (!this->DestinationList.isEmpty()) {
-        delete this->DestinationList.takeLast();
+    if (mws == STEP_SELECT_DEST) {
+        this->DestinationBox->refreshDestinations(this->SourceDirectory);
     }
 
-    // Create the new destinations
-    QList<QStorageInfo> Storages = QStorageInfo::mountedVolumes();
-    WidgetDestination* Device    = nullptr;
-    int Row                      = 0;
-    int Column                   = 0;
-
-    for (int i = 0; i < Storages.count(); i++) {
-        QStorageInfo Storage = Storages.at(i);
-
-        // Add only !root/RW/valid/ready devices
-        if (!Storage.isRoot() && !Storage.isReadOnly() && Storage.isValid() && Storage.isReady()) {
-            Device = new WidgetDestination(Storage);
-            this->DestinationList << Device;
-
-            // Add the widget to the UI, and create another line if destination line is full
-            this->DestinationGrid->addWidget(Device, Row, Column);
-            if (Column == HZ_DEST_MAX - 1) {
-                Column = 0;
-                Row++;
-            }
-            else {
-                Column++;
-            }
-
-            // Refresh UI when a checkbox is toggled, to enable/disable the Clone button
-            connect(Device->checkBox(), &QCheckBox::stateChanged, [this]() { updateUI(); });
-        }
+    if (mws == STEP_CLONE) {
+        this->WAnalyze = new WindowAnalyze(this->DestinationBox->selectedDestinations());
+        this->WAnalyze->show();
+        setVisible(false);
+        ThreadAnalyze::instance()->analyze(this->SourceDirectory, this->DestinationBox->destinationList(), this->OverwriteBox->value());
     }
 
+    this->MainWindowStep = mws;
     updateUI();
 }
 
-//  clone
-//
-// Start the analyze process
-//
-void MainWindow::clone()
-{
-    // Create and show the progress window
-    this->WAnalyze = new WindowAnalyze(selectedDrivesCount());
-    this->WAnalyze->show();
-
-    // Start the analyzer thread
-    ThreadAnalyze::instance()->analyze(ui->EditDirectory->text(), selectedDrives(), ui->SpinboxOverwriteSize->value());
-}
-
-//  browseSource
-//
-// Show a window which allow to select a directory
-//
-void MainWindow::browseSource()
-{
-    // Default directory
-    QString directory = ui->EditDirectory->text();
-    if (!QDir(directory).exists()) {
-        directory = QDir::homePath();
-    }
-
-    // Open directory selection
-    QString Source = QFileDialog::getExistingDirectory(this, tr("Select source directory"), directory);
-    if (!Source.isEmpty()) {
-        setSource(Source);
-    }
-}
-
-//  setSource
-//
-// Called by the browseSource method, or when the program is run by dropping a directory on its icon
-//
-void MainWindow::setSource(QString directory)
-{
-    ui->EditDirectory->setText(QDir::cleanPath(QDir(directory).canonicalPath()));
-    updateUI();
-}
-
-//
-//  updateUI
-//
-// Update destinations and "Clone" button
 void MainWindow::updateUI()
 {
-    // Shortcuts
-    bool SrcDefined    = !ui->EditDirectory->text().isEmpty();
-    bool DestAvailable = !this->DestinationList.isEmpty();
-    bool DestSelected  = selectedDrivesCount() != 0;
+    int mws = this->MainWindowStep;
 
-    // Adjust UI
-    ui->LabelNoDestination->setVisible(!DestAvailable);
-    ui->DestinationWidget->setVisible(DestAvailable);
-    ui->ButtonClone->setEnabled(SrcDefined && DestSelected);
+    this->DropBox->setVisible(mws == STEP_DROP);
+    this->DestinationBox->setVisible(mws == STEP_SELECT_DEST);
+    this->OverwriteBox->setVisible(mws == STEP_OVERWRITE);
+    ui->ButtonPrevious->setEnabled(mws != STEP_DROP);
+    ui->ButtonNext->setDisabled((mws == STEP_DROP) || ((mws == STEP_SELECT_DEST) && (this->DestinationBox->selectedDestinations() == 0)));
+    ui->ButtonRefresh->setVisible(mws == STEP_SELECT_DEST);
 
-    // and window size
     adjustSize();
 }
 
-//  selectedDrives
-//
-// Return the list of the drives selected by the user
-//
-QList<QString> MainWindow::selectedDrives() const
+void MainWindow::threadAborted()
 {
-    QList<QString> Drives;
-    for (int i = 0; i < this->DestinationList.count(); i++) {
-        if (DestinationList.at(i)->isSelected()) {
-            Drives << DestinationList.at(i)->drivePath();
-        }
-    }
-
-    return Drives;
-}
-
-//  selectedDriveCount
-//
-// Return the count of selected drives
-//
-int MainWindow::selectedDrivesCount() const
-{
-    int count = 0;
-    for (int i = 0; i < this->DestinationList.count(); i++) {
-        if (DestinationList.at(i)->isSelected()) {
-            count++;
-        }
-    }
-
-    return count;
+    setVisible(true);
+    changeStep(STEP_OVERWRITE);
 }
 
 //  analyzeComplete
@@ -253,8 +148,11 @@ void MainWindow::analyzeComplete()
     if (window->exec() == QDialog::Accepted) {
         this->WClone = new WindowClone(CopyData::instance()->filesCount());
         this->WClone->show();
-
         ThreadClone::instance()->start();
+    }
+    else {
+        setVisible(true);
+        changeStep(STEP_OVERWRITE);
     }
 
     delete window;
@@ -271,8 +169,9 @@ void MainWindow::deleteWindowAnalyze()
 //
 void MainWindow::cloneComplete()
 {
+    changeStep(STEP_DROP);
+    setVisible(true);
     QMessageBox::information(this, WINDOW_TITLE, tr("Cloning process complete."), QMessageBox::Ok);
-    refreshDestinations();
 }
 
 void MainWindow::deleteWindowClone()

@@ -1,6 +1,21 @@
-#include "SourceBox.hpp"
+#include "WidgetDrop.hpp"
+#include "ui_WidgetDrop.h"
 #include <QFileInfo>
+#include <QList>
 #include <QMimeData>
+#include <QUrl>
+
+WidgetDrop::WidgetDrop(QWidget *parent) :
+      QWidget(parent),
+      ui(new Ui::WidgetDrop)
+{
+    ui->setupUi(this);
+}
+
+WidgetDrop::~WidgetDrop()
+{
+    delete ui;
+}
 
 //
 //  dragEnterEvent
@@ -8,7 +23,7 @@
 // Tell the SourceBox to accept only one directory
 //
 
-void SourceBox::dragEnterEvent(QDragEnterEvent* event)
+void WidgetDrop::dragEnterEvent(QDragEnterEvent* event)
 {
     // We want only URLs
     if (!event->mimeData()->hasUrls()) {
@@ -33,10 +48,11 @@ void SourceBox::dragEnterEvent(QDragEnterEvent* event)
 //
 //  dropEvent
 //
-// Send a signal caught by the MainWindow
+// Display the selected directory and send a signal caught by the MainWindow
 //
 
-void SourceBox::dropEvent(QDropEvent* event)
+void WidgetDrop::dropEvent(QDropEvent* event)
 {
-    emit directoryDropped(event->mimeData()->urls().at(0).toLocalFile());
+    QString directory = event->mimeData()->urls().at(0).toLocalFile();
+    emit directoryDropped(directory);
 }
