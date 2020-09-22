@@ -29,6 +29,7 @@
 #include <QList>
 #include <QMainWindow>
 #include <QString>
+#include <QTime>
 
 enum { STEP_ZERO /* ;) */, STEP_DROP, STEP_SELECT_DEST, STEP_OVERWRITE, STEP_CLONE };
 
@@ -60,6 +61,7 @@ class MainWindow : public QMainWindow
     WindowClone* WClone;
     QString SourceDirectory;
     int MainWindowStep;
+    QTime CloneTimer;
 
     void changeStep(int mws);
     void updateUI();

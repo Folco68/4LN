@@ -43,7 +43,7 @@ class ThreadClone : public QThread
     void run() override;
 
   signals:
-    void copyingFile(QString filename);
+    void copyingFile(QString filename, qint64 size);
     void copyingNextDrive(QString drivename);
     void cloneComplete();
     void cloneAborted();

@@ -44,7 +44,7 @@ class WindowClone : public QWidget
   private:
     Ui::WindowClone* ui;
 
-    void copyingFile(QString filename);
+    void copyingFile(QString filename, qint64 size);
     void copyingNextDrive(QString drivename);
     void updateCount(int count);
 };

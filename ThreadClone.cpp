@@ -56,7 +56,7 @@ void ThreadClone::run()
         // - put in a new list files to be copied
         for (int j = 0; j < drive->fileCount(); j++) {
             FileData* file = drive->file(j);
-            emit copyingFile(file->filename());
+            emit copyingFile(file->filename(), file->size());
 
             FILE_PROCESS process = file->process();
 
@@ -97,7 +97,7 @@ void ThreadClone::run()
         for (int k = 0; k < copylist.count(); k++) {
             QString src  = QString("%1%2%3").arg(CopyData::instance()->sourceDrive()->basePath()).arg(QDir::separator()).arg(copylist.at(k)->filename());
             QString dest = QString("%1%2%3").arg(drive->basePath()).arg(QDir::separator()).arg(copylist.at(k)->filename());
-            emit copyingFile(dest);
+            emit copyingFile(dest, copylist.at(k)->size());
 
             // Source file won't be copied if destination already exists, so we have to remove it first
             // A directory won't never been flagged as "to be copied" if it already exists in the destination (no size limit or mismatch)

@@ -50,12 +50,26 @@ void WindowClone::copyingNextDrive(QString drivename)
     ui->LabelCloning->setText(tr("Cloning... (%1)").arg(drivename));
 }
 
-void WindowClone::copyingFile(QString filename)
+void WindowClone::copyingFile(QString filename, qint64 size)
 {
     int Progress = ui->ProgressBar->value() + 1;
     ui->ProgressBar->setValue(Progress);
 
-    QString format = QString("%1 (%p%)").arg(QDir::cleanPath(filename));
+    QString Size;
+    if (size < 1024) {
+        Size = QString("%1 bytes").arg(size);
+    }
+    else if (size < 1024 * 1024) {
+        Size = QString("%1 kB").arg(size / 1024);
+    }
+    else if (size < 1024 * 1024 * 1024) {
+        Size = QString("%1 MB").arg(size / (1024 * 1024));
+    }
+    else {
+        Size = QString("%1 GB").arg(size / (1024 * 1024 * 1024));
+    }
+
+    QString format = QString("%1 (%2) (%p%)").arg(QDir::cleanPath(filename)).arg(Size);
     ui->ProgressBar->setFormat(format);
 }
 

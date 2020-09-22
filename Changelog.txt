@@ -1,4 +1,9 @@
 2020/09/22
+Cosmetic changes:
+- added a timestamp when cloning process is completed
+- added the size of the file currently copied in the progress bar
+
+2020/09/22
 - prevent excessive vertical expansion of the Main Window by hiding first all boxes, before displaying the right one
 
 2020/09/20

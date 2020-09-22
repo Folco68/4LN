@@ -87,6 +87,7 @@ MainWindow::MainWindow(QString directory) : ui(new Ui::MainWindow), MainWindowSt
     }
 
     adjustSize();
+    setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
 }
 
 MainWindow::~MainWindow()
@@ -157,6 +158,7 @@ void MainWindow::analyzeComplete()
     if (window->exec() == QDialog::Accepted) {
         this->WClone = new WindowClone(CopyData::instance()->filesCount());
         this->WClone->show();
+        this->CloneTimer.start();
         ThreadClone::instance()->start();
     }
     else {
@@ -178,9 +180,15 @@ void MainWindow::deleteWindowAnalyze()
 //
 void MainWindow::cloneComplete()
 {
+    int Elapsed = this->CloneTimer.elapsed() / 1000; // Get rid of ms
+    int h       = Elapsed / (60 * 60);
+    Elapsed -= h * 60 * 60;
+    int mn = Elapsed / 60;
+    int s  = Elapsed % 60;
+
     setVisible(true);
     changeStep(STEP_DROP);
-    QMessageBox::information(this, WINDOW_TITLE, tr("Cloning process complete."), QMessageBox::Ok);
+    QMessageBox::information(this, WINDOW_TITLE, tr("Cloning process completed in %1h %2mn %3s").arg(h).arg(mn).arg(s), QMessageBox::Ok);
 }
 
 void MainWindow::deleteWindowClone()
