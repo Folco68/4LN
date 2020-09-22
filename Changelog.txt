@@ -1,7 +1,10 @@
+2020/09/22
+- prevent excessive vertical expansion of the Main Window by hiding first all boxes, before displaying the right one
+
 2020/09/20
-- Revamped UI. Use now a wizard-like approach
-- First distribution to BGY for testing purpose
-- Better handling of MainWindow a
+- revamped UI. Use now a wizard-like approach
+- first distribution to BGY for testing purpose
+- better handling of MainWindow a
 
 2020/09/15
 - added percentage in progress bar of progress windows
@@ -27,7 +30,7 @@
 - removed ThreadClone::clone() method, use ThreadClone::run() instead
 
 2020/08/23
-- First version copying/deleting successfully directory names (no more files ignored because they are in an non-existing directory)
+- first version copying/deleting successfully directory names (no more files ignored because they are in an non-existing directory)
 - cleaned formating of filenames printed the progress windows is now responsibility of the window (make the factory code really simpler to read)
 
 2020/08/22

@@ -121,9 +121,18 @@ void MainWindow::updateUI()
 {
     int mws = this->MainWindowStep;
 
+    // First, set all boxes invisible, to avoid a vertical expansion of the main window
+    // (adjustUI() may increase size, but not reduce it)
+    this->DropBox->setVisible(false);
+    this->DestinationBox->setVisible(mws == false);
+    this->OverwriteBox->setVisible(mws == false);
+
+    // Then make a box visible, depending on the program state
     this->DropBox->setVisible(mws == STEP_DROP);
     this->DestinationBox->setVisible(mws == STEP_SELECT_DEST);
     this->OverwriteBox->setVisible(mws == STEP_OVERWRITE);
+
+    // Handle buttons
     ui->ButtonPrevious->setEnabled(mws != STEP_DROP);
     ui->ButtonNext->setDisabled((mws == STEP_DROP) || ((mws == STEP_SELECT_DEST) && (this->DestinationBox->selectedDestinations() == 0)));
     ui->ButtonRefresh->setVisible(mws == STEP_SELECT_DEST);
@@ -169,8 +178,8 @@ void MainWindow::deleteWindowAnalyze()
 //
 void MainWindow::cloneComplete()
 {
-    changeStep(STEP_DROP);
     setVisible(true);
+    changeStep(STEP_DROP);
     QMessageBox::information(this, WINDOW_TITLE, tr("Cloning process complete."), QMessageBox::Ok);
 }
 
