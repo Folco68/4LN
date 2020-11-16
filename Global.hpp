@@ -39,4 +39,10 @@
 // Step for overwrite size (kB)
 #define OVERWRITE_SIZE_STEP 100
 
+// Overwrite settings
+#define ORGANIZATION_NAME "FolcoSoft"
+#define APPLICATION_NAME "4LN"
+#define KEY_OVERWRITE "overwrite"
+#define DEFAULT_OVERWRITE 1000
+
 #endif // GLOBAL_HPP
