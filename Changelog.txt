@@ -9,7 +9,7 @@ Cosmetic changes:
 2020/09/20
 - revamped UI. Use now a wizard-like approach
 - first distribution to BGY for testing purpose
-- better handling of MainWindow a
+- better handling of MainWindow
 
 2020/09/15
 - added percentage in progress bar of progress windows

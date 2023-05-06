@@ -36,7 +36,7 @@ Under the hood
 ==============
 
 Written in C++, statically built on Windows against Qt 5.12.3
-Sources are provided with a .pro file, so you can easily rebuld the program.
+Sources are provided with a .pro file, so you can easily rebuild the program.
 See https://www.qt.io/ for infos.
 
 This version separates UI factory and data processing: analyze and clone process are run in external threads,
