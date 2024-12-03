@@ -18,31 +18,33 @@
  * mail: martial <dot> demolins <at> gmail <dot> com
  */
 
-#ifndef GLOBAL_HPP
-#define GLOBAL_HPP
+#ifndef WIDGETDROP_HPP
+#define WIDGETDROP_HPP
 
-// Title of windows
-#define WINDOW_TITLE "4LN - Multiple USB storages for TPMS"
+#include <QDragEnterEvent>
+#include <QDropEvent>
+#include <QString>
+#include <QWidget>
 
-// Minimum width of the progress windows (analyze and clone operations)
-#define PROGRESS_WINDOW_MIN_WIDTH 900
+namespace Ui {
+    class WidgetDrop;
+}
 
-// Minimum width of the main window
-#define MAIN_WINDOW_MIN_WIDTH 640
+class WidgetDrop: public QWidget
+{
+    Q_OBJECT
 
-// Minimum height of the main window
-#define MAIN_WINDOW_MIN_HEIGHT 480
+  public:
+    explicit WidgetDrop(QWidget* parent = nullptr);
+    ~WidgetDrop() override;
 
-// Default overwrite size (kB)
-#define OVERWRITE_SIZE 100
+  private:
+    Ui::WidgetDrop* ui;
+    void            dragEnterEvent(QDragEnterEvent* event) override; // Called when something is dragged over the object
+    void            dropEvent(QDropEvent* event) override;           // Called when something is dropped on the object
 
-// Step for overwrite size (kB)
-#define OVERWRITE_SIZE_STEP 100
+  signals:
+    void directoryDropped(QString directory);
+};
 
-// Overwrite settings
-#define ORGANIZATION_NAME "FolcoSoft"
-#define APPLICATION_NAME "4LN"
-#define KEY_OVERWRITE "overwrite"
-#define DEFAULT_OVERWRITE 1000
-
-#endif // GLOBAL_HPP
+#endif // WIDGETDROP_HPP

@@ -18,31 +18,39 @@
  * mail: martial <dot> demolins <at> gmail <dot> com
  */
 
-#ifndef GLOBAL_HPP
-#define GLOBAL_HPP
+#ifndef THREADANALYZE_HPP
+#define THREADANALYZE_HPP
 
-// Title of windows
-#define WINDOW_TITLE "4LN - Multiple USB storages for TPMS"
+#include "DriveData.hpp"
+#include <QObject>
+#include <QThread>
 
-// Minimum width of the progress windows (analyze and clone operations)
-#define PROGRESS_WINDOW_MIN_WIDTH 900
+//
+//  ThreadAnalyze
+//
+// This class describes the thread which compares source and destinations, to set the corresponding process for each file
+//
+class ThreadAnalyze: public QThread
+{
+    Q_OBJECT
 
-// Minimum width of the main window
-#define MAIN_WINDOW_MIN_WIDTH 640
+  public:
+    static ThreadAnalyze* instance();
+    static void           release();
 
-// Minimum height of the main window
-#define MAIN_WINDOW_MIN_HEIGHT 480
+    void analyze(QString source, QList<QString> destinations, int overwrite);
 
-// Default overwrite size (kB)
-#define OVERWRITE_SIZE 100
+  private:
+    static ThreadAnalyze* threadanalyze;
 
-// Step for overwrite size (kB)
-#define OVERWRITE_SIZE_STEP 100
+    void run() override;
+    void parseDirectory(DriveData* drive, QString path = QString(""));
 
-// Overwrite settings
-#define ORGANIZATION_NAME "FolcoSoft"
-#define APPLICATION_NAME "4LN"
-#define KEY_OVERWRITE "overwrite"
-#define DEFAULT_OVERWRITE 1000
+  signals:
+    void analyzeComplete();
+    void parsingFile(QString filename);
+    void parsingNextDirectory();
+    void analyzeAborted();
+};
 
-#endif // GLOBAL_HPP
+#endif // THREADANALYZE_HPP

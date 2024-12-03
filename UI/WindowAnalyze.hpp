@@ -18,31 +18,34 @@
  * mail: martial <dot> demolins <at> gmail <dot> com
  */
 
-#ifndef GLOBAL_HPP
-#define GLOBAL_HPP
+#ifndef WINDOWANALYZE_HPP
+#define WINDOWANALYZE_HPP
 
-// Title of windows
-#define WINDOW_TITLE "4LN - Multiple USB storages for TPMS"
+#include <QString>
+#include <QWidget>
 
-// Minimum width of the progress windows (analyze and clone operations)
-#define PROGRESS_WINDOW_MIN_WIDTH 900
+namespace Ui {
+    class WindowAnalyze;
+}
 
-// Minimum width of the main window
-#define MAIN_WINDOW_MIN_WIDTH 640
+//
+//  WindowAnalyze
+//
+// This window is displayed when the thread process is running
+//
+class WindowAnalyze: public QWidget
+{
+    Q_OBJECT
 
-// Minimum height of the main window
-#define MAIN_WINDOW_MIN_HEIGHT 480
+  public:
+    explicit WindowAnalyze(int progresscount);
+    ~WindowAnalyze();
 
-// Default overwrite size (kB)
-#define OVERWRITE_SIZE 100
+  private:
+    Ui::WindowAnalyze* ui;
 
-// Step for overwrite size (kB)
-#define OVERWRITE_SIZE_STEP 100
+    void parsingNextDirectory();
+    void parsingFile(QString filename);
+};
 
-// Overwrite settings
-#define ORGANIZATION_NAME "FolcoSoft"
-#define APPLICATION_NAME "4LN"
-#define KEY_OVERWRITE "overwrite"
-#define DEFAULT_OVERWRITE 1000
-
-#endif // GLOBAL_HPP
+#endif // WINDOWANALYZE_HPP

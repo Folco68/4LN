@@ -18,31 +18,46 @@
  * mail: martial <dot> demolins <at> gmail <dot> com
  */
 
-#ifndef GLOBAL_HPP
-#define GLOBAL_HPP
+#ifndef FILEDATA_HPP
+#define FILEDATA_HPP
 
-// Title of windows
-#define WINDOW_TITLE "4LN - Multiple USB storages for TPMS"
+#include <QString>
 
-// Minimum width of the progress windows (analyze and clone operations)
-#define PROGRESS_WINDOW_MIN_WIDTH 900
+// Operation performed on the file/directory
+typedef enum {
+    DELETE_FILE,
+    COPY_FILE,
+    IGNORE_FILE
+} FILE_PROCESS;
 
-// Minimum width of the main window
-#define MAIN_WINDOW_MIN_WIDTH 640
+// File type (regular file or directory)
+typedef enum {
+    TYPE_DIRECTORY,
+    TYPE_FILE
+} FILE_TYPE;
+#define NO_SIZE 0
 
-// Minimum height of the main window
-#define MAIN_WINDOW_MIN_HEIGHT 480
+//
+//  FileData
+//
+// This class describes an entry (file or directory) in the source or in a destination
+//
+class FileData
+{
+  public:
+    FileData(QString filename, qint64 size, FILE_PROCESS process, FILE_TYPE type);
 
-// Default overwrite size (kB)
-#define OVERWRITE_SIZE 100
+    QString      filename() const;
+    qint64       size() const;
+    FILE_PROCESS process() const;
+    FILE_TYPE    type() const;
+    void         setProcess(FILE_PROCESS process);
 
-// Step for overwrite size (kB)
-#define OVERWRITE_SIZE_STEP 100
+  private:
+    QString      Filename;
+    qint64       Size;
+    FILE_PROCESS Process;
+    FILE_TYPE    Type;
+};
 
-// Overwrite settings
-#define ORGANIZATION_NAME "FolcoSoft"
-#define APPLICATION_NAME "4LN"
-#define KEY_OVERWRITE "overwrite"
-#define DEFAULT_OVERWRITE 1000
-
-#endif // GLOBAL_HPP
+#endif // FILEDATA_HPP

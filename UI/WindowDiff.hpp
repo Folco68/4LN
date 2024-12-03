@@ -18,31 +18,30 @@
  * mail: martial <dot> demolins <at> gmail <dot> com
  */
 
-#ifndef GLOBAL_HPP
-#define GLOBAL_HPP
+#ifndef WINDOWDIFF_HPP
+#define WINDOWDIFF_HPP
 
-// Title of windows
-#define WINDOW_TITLE "4LN - Multiple USB storages for TPMS"
+#include <QDialog>
 
-// Minimum width of the progress windows (analyze and clone operations)
-#define PROGRESS_WINDOW_MIN_WIDTH 900
+namespace Ui {
+    class WindowDiff;
+}
 
-// Minimum width of the main window
-#define MAIN_WINDOW_MIN_WIDTH 640
+//
+//  WindowDiff
+//
+// This window displays the result computed by the analyze thread
+//
+class WindowDiff: public QDialog
+{
+    Q_OBJECT
 
-// Minimum height of the main window
-#define MAIN_WINDOW_MIN_HEIGHT 480
+  public:
+    explicit WindowDiff(QWidget* parent = nullptr);
+    ~WindowDiff();
 
-// Default overwrite size (kB)
-#define OVERWRITE_SIZE 100
+  private:
+    Ui::WindowDiff* ui;
+};
 
-// Step for overwrite size (kB)
-#define OVERWRITE_SIZE_STEP 100
-
-// Overwrite settings
-#define ORGANIZATION_NAME "FolcoSoft"
-#define APPLICATION_NAME "4LN"
-#define KEY_OVERWRITE "overwrite"
-#define DEFAULT_OVERWRITE 1000
-
-#endif // GLOBAL_HPP
+#endif // WINDOWDIFF_HPP

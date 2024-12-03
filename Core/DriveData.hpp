@@ -18,31 +18,32 @@
  * mail: martial <dot> demolins <at> gmail <dot> com
  */
 
-#ifndef GLOBAL_HPP
-#define GLOBAL_HPP
+#ifndef DRIVEDATA_HPP
+#define DRIVEDATA_HPP
 
-// Title of windows
-#define WINDOW_TITLE "4LN - Multiple USB storages for TPMS"
+#include "FileData.hpp"
+#include <QList>
+#include <QString>
 
-// Minimum width of the progress windows (analyze and clone operations)
-#define PROGRESS_WINDOW_MIN_WIDTH 900
+//
+//  DriveData
+//
+// This class describes the source directory or a destination drive
+//
+class DriveData
+{
+  public:
+    explicit DriveData(QString basepath);
+    QString         basePath() const;
+    int             fileCount() const;
+    FileData*       file(int index);
+    void            addFile(FileData file);
+    QList<FileData> filesMarkedForDeletion() const;
+    QList<FileData> filesMarkedForCopy() const;
 
-// Minimum width of the main window
-#define MAIN_WINDOW_MIN_WIDTH 640
+  private:
+    QString         BasePath;
+    QList<FileData> FileList;
+};
 
-// Minimum height of the main window
-#define MAIN_WINDOW_MIN_HEIGHT 480
-
-// Default overwrite size (kB)
-#define OVERWRITE_SIZE 100
-
-// Step for overwrite size (kB)
-#define OVERWRITE_SIZE_STEP 100
-
-// Overwrite settings
-#define ORGANIZATION_NAME "FolcoSoft"
-#define APPLICATION_NAME "4LN"
-#define KEY_OVERWRITE "overwrite"
-#define DEFAULT_OVERWRITE 1000
-
-#endif // GLOBAL_HPP
+#endif // DRIVEDATA_HPP

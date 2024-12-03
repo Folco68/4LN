@@ -1,3 +1,0 @@
-- check all included files
-- rework WindowDiff
-- prevent Main Window size to change when selecting a destination

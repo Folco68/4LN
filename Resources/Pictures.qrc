@@ -1,0 +1,10 @@
+<RCC>
+    <qresource prefix="/Pictures">
+        <file>Box.png</file>
+        <file>DownArrow.png</file>
+        <file>Folder.png</file>
+        <file>LeftArrow.png</file>
+        <file>RightArrow.png</file>
+        <file>USBstick.png</file>
+    </qresource>
+</RCC>

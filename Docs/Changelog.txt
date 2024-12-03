@@ -1,0 +1,71 @@
+2024/12/03
+- ported to Qt 6.8.1 (QTime -> QElapsedTimer)
+- organized the project layout
+- standardized variables case
+- reformatted all files
+- release singletons in the destructor of MainWindow, because QGUIApplication does not return on all platforms
+- updated years of the copyright
+- removed useless included files
+- bumped to version 1.3.0
+
+2020/09/22
+Cosmetic changes:
+- added a timestamp when cloning process is completed
+- added the size of the file currently copied in the progress bar
+
+2020/09/22
+- prevent excessive vertical expansion of the Main Window by hiding first all boxes, before displaying the right one
+
+2020/09/20
+- revamped UI. Use now a wizard-like approach
+- first distribution to BGY for testing purpose
+- better handling of MainWindow
+
+2020/09/15
+- added percentage in progress bar of progress windows
+- allowed to set accurately the overwrite size limit
+- bumped do version 1.2
+
+2020/09/12
+- bumped version to 1.1
+
+2020/09/12
+- source directory can be set by dropping a directory icon into the source box
+- renamed the soft from MDC to 4LN
+- main window is now hidden when thread pocesses window are running
+- process windows can now be reduced in the Windows task bar
+
+2020/08/23
+- added a lot of class and function comments
+- changed the way the progress bar is used during clone process
+
+2020/08/23
+- added built-in documentation
+- added GPL header in source files
+- removed ThreadClone::clone() method, use ThreadClone::run() instead
+
+2020/08/23
+- first version copying/deleting successfully directory names (no more files ignored because they are in an non-existing directory)
+- cleaned formating of filenames printed the progress windows is now responsibility of the window (make the factory code really simpler to read)
+
+2020/08/22
+First working version. Still need improvements
+- implemented cloning thread and its progress window
+- fixed multiple show() of DiffWindow due to wrong connection
+- fixed analyze algorithm. Non-existing files in destination are now created
+
+2020/08/09
+- renamed a lot of files, classes and symbol for consistency
+- reworked the way Data are structured. Use a singleton now, to get data outside of pre-processing thread
+
+2020/08/07
+- started to rework data structure, with a CopyItem object which handle path, filename, size and action to perform
+
+2020/08/02
+- source and destinations directories are now analyzed
+- analyze performed now by an external thread
+- progress shown in an external window
+
+2020/03/14
+- initial release
+- not working version

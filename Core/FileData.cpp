@@ -18,31 +18,37 @@
  * mail: martial <dot> demolins <at> gmail <dot> com
  */
 
-#ifndef GLOBAL_HPP
-#define GLOBAL_HPP
+#include "FileData.hpp"
 
-// Title of windows
-#define WINDOW_TITLE "4LN - Multiple USB storages for TPMS"
+FileData::FileData(QString filename, qint64 size, FILE_PROCESS process, FILE_TYPE type)
+    : Filename(filename)
+    , Size(size)
+    , Process(process)
+    , Type(type)
+{
+}
 
-// Minimum width of the progress windows (analyze and clone operations)
-#define PROGRESS_WINDOW_MIN_WIDTH 900
+QString FileData::filename() const
+{
+    return this->Filename;
+}
 
-// Minimum width of the main window
-#define MAIN_WINDOW_MIN_WIDTH 640
+qint64 FileData::size() const
+{
+    return this->Size;
+}
 
-// Minimum height of the main window
-#define MAIN_WINDOW_MIN_HEIGHT 480
+FILE_PROCESS FileData::process() const
+{
+    return this->Process;
+}
 
-// Default overwrite size (kB)
-#define OVERWRITE_SIZE 100
+FILE_TYPE FileData::type() const
+{
+    return this->Type;
+}
 
-// Step for overwrite size (kB)
-#define OVERWRITE_SIZE_STEP 100
-
-// Overwrite settings
-#define ORGANIZATION_NAME "FolcoSoft"
-#define APPLICATION_NAME "4LN"
-#define KEY_OVERWRITE "overwrite"
-#define DEFAULT_OVERWRITE 1000
-
-#endif // GLOBAL_HPP
+void FileData::setProcess(FILE_PROCESS process)
+{
+    this->Process = process;
+}

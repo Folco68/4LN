@@ -18,31 +18,35 @@
  * mail: martial <dot> demolins <at> gmail <dot> com
  */
 
-#ifndef GLOBAL_HPP
-#define GLOBAL_HPP
+#ifndef WINDOWCLONE_HPP
+#define WINDOWCLONE_HPP
 
-// Title of windows
-#define WINDOW_TITLE "4LN - Multiple USB storages for TPMS"
+#include <QString>
+#include <QWidget>
 
-// Minimum width of the progress windows (analyze and clone operations)
-#define PROGRESS_WINDOW_MIN_WIDTH 900
+namespace Ui {
+    class WindowClone;
+}
 
-// Minimum width of the main window
-#define MAIN_WINDOW_MIN_WIDTH 640
+//
+//  WindowClone
+//
+// This window is displayed when the cloning process is running
+//
+class WindowClone: public QWidget
+{
+    Q_OBJECT
 
-// Minimum height of the main window
-#define MAIN_WINDOW_MIN_HEIGHT 480
+  public:
+    explicit WindowClone(int progresscount);
+    ~WindowClone();
 
-// Default overwrite size (kB)
-#define OVERWRITE_SIZE 100
+  private:
+    Ui::WindowClone* ui;
 
-// Step for overwrite size (kB)
-#define OVERWRITE_SIZE_STEP 100
+    void copyingFile(QString filename, qint64 size);
+    void copyingNextDrive(QString drivename);
+    void updateCount(int count);
+};
 
-// Overwrite settings
-#define ORGANIZATION_NAME "FolcoSoft"
-#define APPLICATION_NAME "4LN"
-#define KEY_OVERWRITE "overwrite"
-#define DEFAULT_OVERWRITE 1000
-
-#endif // GLOBAL_HPP
+#endif // WINDOWCLONE_HPP
