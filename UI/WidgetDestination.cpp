@@ -29,7 +29,7 @@ WidgetDestination::WidgetDestination(QWidget* parent)
 {
     ui->setupUi(this);
 
-    this->DestIcon = QIcon(":/pic/USBstick.png");
+    this->DestIcon = QIcon(":/Pictures/USBstick.png");
 }
 
 WidgetDestination::~WidgetDestination()

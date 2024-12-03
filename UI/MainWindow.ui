@@ -110,8 +110,8 @@
          <string>Previous</string>
         </property>
         <property name="icon">
-         <iconset>
-          <normaloff>:/pic/LeftArrow.png</normaloff>:/pic/LeftArrow.png</iconset>
+         <iconset resource="../Resources/Pictures.qrc">
+          <normaloff>:/Pictures/LeftArrow.png</normaloff>:/Pictures/LeftArrow.png</iconset>
         </property>
        </widget>
       </item>
@@ -121,8 +121,8 @@
          <string>Next</string>
         </property>
         <property name="icon">
-         <iconset>
-          <normaloff>:/pic/RightArrow.png</normaloff>:/pic/RightArrow.png</iconset>
+         <iconset resource="../Resources/Pictures.qrc">
+          <normaloff>:/Pictures/RightArrow.png</normaloff>:/Pictures/RightArrow.png</iconset>
         </property>
        </widget>
       </item>
@@ -131,6 +131,8 @@
    </layout>
   </widget>
  </widget>
- <resources/>
+ <resources>
+  <include location="../Resources/Pictures.qrc"/>
+ </resources>
  <connections/>
 </ui>

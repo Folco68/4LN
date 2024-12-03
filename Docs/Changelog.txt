@@ -1,4 +1,8 @@
 2024/12/03
+- remove .gitignore
+- updated three missing icons (due to the new layout)
+
+2024/12/03
 - ported to Qt 6.8.1 (QTime -> QElapsedTimer)
 - organized the project layout
 - standardized variables case
