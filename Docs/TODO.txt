@@ -3,7 +3,7 @@ o rework WindowDiff
 o prevent Main Window size to change when selecting a destination
 - create BeforeRelease.hpp and update Readme
 + update (c) year
-- add window and app icon
++ add window and app icon
 + release singletons in the MainWindow destructor
 + use std var case
 + solve the QTime::start and QTime::elapsed obsolete methods

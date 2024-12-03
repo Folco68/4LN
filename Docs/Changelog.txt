@@ -1,4 +1,7 @@
 2024/12/03
+- added window and application icons
+
+2024/12/03
 - remove .gitignore
 - updated three missing icons (due to the new layout)
 

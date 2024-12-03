@@ -77,6 +77,7 @@ if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
     qt_add_executable(4LN
         MANUAL_FINALIZATION
         ${PROJECT_SOURCES}
+        Resources/Icon.rc
 
     )
 # Define target properties for Android with Qt 6 as:

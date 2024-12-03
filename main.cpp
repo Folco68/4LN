@@ -20,10 +20,13 @@
 
 #include "UI/MainWindow.hpp"
 #include <QApplication>
+#include <QGuiApplication>
+#include <QIcon>
 
 int main(int argc, char *argv[])
 {
     QApplication Application(argc, argv);
+    Application.setWindowIcon(QIcon(":/Pictures/Icon.png"));
 
     // Handle drop on the desktop icon (or args in CLI...)
     QString Directory;

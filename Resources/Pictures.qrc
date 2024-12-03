@@ -6,5 +6,7 @@
         <file>LeftArrow.png</file>
         <file>RightArrow.png</file>
         <file>USBstick.png</file>
+        <file>Icon.ico</file>
+        <file>Icon.png</file>
     </qresource>
 </RCC>
