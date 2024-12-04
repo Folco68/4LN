@@ -17,3 +17,19 @@
  *
  * mail: martial <dot> demolins <at> gmail <dot> com
  */
+
+#ifndef BEFORE_RELEASE_HPP
+#define BEFORE_RELEASE_HPP
+
+//
+// Some strings that need an update before a commit or a release
+// Update Changelog.txt with the git changelog
+// Update TODO if necessary
+//
+#define APPLICATION_VERSION_STR "1.4.0"
+#define POSITION_STR            "Service Engineer (S2), Market France/BeNeLux, Tetra Pak"
+#define COPYRIGHT_STR           "(c)2024-2025 Martial Demolins"
+#define EMAIL_PROFESSIONAL      "martial.demolins@tetrapak.com"
+#define EMAIL_PERSONAL          "martial.demolins@gmail.com"
+
+#endif // BEFORE_RELEASE_HPP
