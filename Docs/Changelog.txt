@@ -1,4 +1,9 @@
 2024/12/03
+- bumped to version 1.4.0
+- updated readme header. Added credit to GBY
+- secured the opening of documentation files
+
+2024/12/03
 - added window and application icons
 
 2024/12/03

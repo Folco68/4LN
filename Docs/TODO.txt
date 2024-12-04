@@ -1,7 +1,7 @@
 + check all included files
-o rework WindowDiff
+- rework WindowDiff
 o prevent Main Window size to change when selecting a destination
-- create BeforeRelease.hpp and update Readme
++ create BeforeRelease.hpp and update Readme
 + update (c) year
 + add window and app icon
 + release singletons in the MainWindow destructor

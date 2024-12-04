@@ -1,9 +1,28 @@
-4LN - Multi Destinations Copier by Martial Demolins
-Version: 1.3.0
-License: GPL v3+ (https://www.gnu.org/licenses/gpl-3.0.txt)
-Source + download page: https://github.com/Folcogh/4LN (or, for TP users, \Partage_Techniciens\Demolins\Softs\4LN)
-Bug reports and suggestions: martial <dot> demolins <at> gmail <dot> com or martial < dot> demolins < at> tetrapak <dot> com
+    /***************************************************************************
+     *                                                                         *
+     *                                   4LN                                   *
+     *                                                                         *
+     *                      Multiple destinations copier                       *
+     *                                                                         *
+     **************************************************************************/
 
+
+About
+-----
+
+Author:                           Martial Demolins
+Mail:                             PLACEHOLDER_EMAIL_PERSONAL, PLACEHOLDER_EMAIL_PROFESSIONAL
+Position:                         PLACEHOLDER_POSITION_STR
+
+License:                          GPL v3. You can find it at https://www.gnu.org/licenses/gpl-3.0.en.html
+Copyright:                        PLACEHOLDER_COPYRIGHT_STR
+Version:                          PLACEHOLDER_APPLICATION_VERSION_STR
+Language:                         C++
+Framework:                        Qt PLACEHOLDER_QT_VERSION_STR
+Source and binary repository:     https://github.com/Folco68/4LN
+Changelog:                        https://github.com/Folco68/4LN/commits?author=Folco68
+
+Thanks to Guilhem Barthelemy for original idea and feedback!
 
 How to
 ======
